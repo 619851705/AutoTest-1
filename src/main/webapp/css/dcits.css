@@ -1,0 +1,156 @@
+/****************DataTable渲染相关CSS***********************/
+/* 单元格连续纯字母数字强制换行显示 */
+.wordwrap{
+	word-wrap: break-word;
+	word-break: break-all;
+	overflow: hidden; 
+}
+/* 超长文字单元格省略号显示 */
+.ellipsis{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+}
+/* spin遮罩层 */
+.overlay{
+    width: 100%;
+    height: 100%;
+    top:0;
+    left:0;
+    position: absolute;
+    z-index: 1;
+	background: white;
+	filter: alpha(opacity = 60);
+	opacity: .6;
+}
+/* fixed的表格才可以使单元格显示省略号*/
+.table{ 
+	table-layout:fixed; 
+} 
+
+#div-table-container{
+	position:relative;
+}
+
+.appoint {
+	cursor:pointer;
+}
+
+/****************上传文件相关CSS***********************/
+.b14b {font-size:14px; color:#333; font-weight:bolder; text-decoration:none;}
+.b14 {font-size:14px; color:#333; text-decoration:none;}
+.b14:hover {color:#F00;}
+.bs1 {width:70px; height:25px; background-image:url("../img/tcc/bb1.jpg"); line-height:25px; text-align:center; color:#FFF; border:0; cursor:pointer;}
+.bs1:hover { background-image:url("../img/tcc/bb2.jpg");}
+.bs2 {width:70px; height:25px; background-image:url("../img/tcc/bb3.jpg"); line-height:25px; text-align:center; color:#333; border:0; cursor:pointer;}
+.bs2:hover { background-image:url("../img/tcc/bb1.jpg"); color:#FFF;}
+.ae {line-height:25px; font-size:14px; color:#F00; font-weight:bolder; text-align:center;}
+.upf {width:70px; height:25px; float:right; background-image:url("../img/tcc/bb1.jpg"); line-height:25px; font-size:12px; text-align:center; color:#FFF; border:0; cursor:pointer;}
+.upf:hover { background-image:url("../img/tcc/bb2.jpg");}
+.suf {width:160px; height:25px; float:right;}
+.clr {clear:both;}
+.webuploader-element-invisible {position: absolute !important; clip: rect(1px 1px 1px 1px); clip: rect(1px,1px,1px,1px);}
+.fl {padding:10px; border-bottom:1px #CCC dashed;}
+.fn {width:750px; float:left;}
+.fd {width:70px; float:right;}
+
+/********************************************************/
+.dct-message-json{
+	height: 350px;
+	padding: 5px 10px;
+}
+
+.show-interface-messages{
+	cursor: pointer;
+}
+
+/*************testData********************/
+.setting-parameter {
+	padding:8px;
+	overflow: hidden;
+}
+.setting-parameter > div {
+	margin: 5px 0px 8px 0px;
+}
+
+.setting-parameter > #dataMsg > textarea {
+	height: 280px;
+	margin-top: 5px;
+}
+
+
+
+/***********testData-importData****************/
+#parameters {
+	margin-bottom: 12px;	
+}
+
+#parameters > button {
+	width:120px;
+	padding:2px;
+	margin-right:5px;
+	margin-bottom: 8px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;	
+}
+
+.parameter-info-table {
+	margin: 12px;	
+	width:470px;
+	height:220px;
+	font-size: 18px;
+}
+.parameter-info-table > tbody > tr > td:nth-child(1) {
+	font-weight: bolder;
+}
+
+.parameter-data > #select-parameters {	
+	width: 38%;
+}
+
+.parameter-data {
+	margin-top: 16px;
+}
+
+#input-data-textarea {
+	width: 52%;
+	display: none;
+}
+
+
+#testTips > p {
+	color:#F7B824;
+	font-size: 20px;
+}
+
+#result-params > p > span:first-child {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+#result-params > p > span:last-child {
+	font-size: 16px;
+}
+
+#total-count {
+	color:#393D49;
+}
+
+#current-complete-count {
+	color:#1E9FFF;
+}
+
+#current-success-count {
+	color:green;
+}
+
+#current-fail-count {
+	color:red;
+}
+
+#current-stop-count {
+	color:#808080;
+}

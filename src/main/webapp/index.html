@@ -1,0 +1,260 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <LINK rel="Bookmark" href="/favicon.ico" >
+    <LINK rel="Shortcut Icon" href="/favicon.ico" />
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="libs/html5.js"></script>
+    <script type="text/javascript" src="libs/respond.min.js"></script>
+    <script type="text/javascript" src="libs/PIE_IE678.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="libs/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="libs/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="libs/Hui-iconfont/1.0.7/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="libs/icheck/icheck.css" />
+    <link rel="stylesheet" type="text/css" href="libs/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="libs/h-ui.admin/css/H-ui.login.css" />
+    <!--[if IE 6]>
+    <script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <title>首页-自动化测试平台</title>
+    </head>
+<body>
+<header class="navbar-wrapper">
+    <div class="navbar navbar-fixed-top">
+        <div class="container-fluid cl"> <a class="logo navbar-logo f-l mr-10 hidden-xs" href="">自动化测试平台</a> <a class="logo navbar-logo-m f-l mr-10 visible-xs" href="">神州数码</a> <span class="logo navbar-slogan f-l mr-10 hidden-xs" id="version"></span> <a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs" href="javascript:;">&#xe667;</a>
+            <nav class="nav navbar-nav">
+                <ul class="cl">
+                    <li class="dropDown dropDown_hover"><a href="javascript:;" class="dropDown_A"><i class="Hui-iconfont">&#xe600;</i>快捷入口<i class="Hui-iconfont">&#xe6d5;</i></a>
+                        <ul class="dropDown-menu menu radius box-shadow">
+                        	<li><a href="javascript:;" onclick="to_myTask('我的测试任务','htmls/user/myTasks.html','800','500')"><i class="Hui-iconfont">&#xe687;</i> 当前任务情况</a></li>
+                            <li><a _href="htmls/interfaceTest/A_reportList.html" data-title="测试报告-接口自动化" href="javascript:void(0)" class="openIframeNew"><i class="Hui-iconfont">&#xe636;</i>接口测试报告</a></li>
+                            <li><a _href="" data-title="测试报告-APP自动化" href="javascript:void(0)" class="openIframeNew"><i class="Hui-iconfont">&#xe6a2;</i> APP测试报告</a></li>
+                            <li><a _href="htmls/webTest/webReportList.html" data-title="测试报告-Web自动化" href="javascript:void(0)" class="openIframeNew"><i class="Hui-iconfont">&#xe6d2;</i>WEB测试报告</a></li>                           
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
+                <ul class="cl">
+                    <li id="role_name"></li>
+                    <li class="dropDown dropDown_hover"> <a href="#" class="dropDown_A" id="real_name"><i class="Hui-iconfont">&#xe6d5;</i></a>
+                        <ul class="dropDown-menu menu radius box-shadow">
+                            <li><a _href="htmls/user/myUserInfo.html" data-title="我的信息" href="javascript:void(0)" class="openIframeNew">个人信息</a></li>
+                            <li><a href="javascript:;" onclick="to_changeUser();">切换账户</a></li>
+                            <li><a href="javascript:;" onclick="to_logout()">退出</a></li>
+                        </ul>
+                    </li>
+                    <li id="Hui-msg"> <a _href="htmls/user/mailList.html" data-title="我的邮件" href="javascript:void(0)" title="消息" class="openIframeNew"><span class="badge badge-danger noReadMailNum"></span><i class="Hui-iconfont" style="font-size:18px">&#xe68a;</i></a> </li>
+                    <li id="Hui-skin" class="dropDown right dropDown_hover"> <a href="javascript:;" class="dropDown_A" title="换肤"><i class="Hui-iconfont" style="font-size:18px">&#xe62a;</i></a>
+                        <ul class="dropDown-menu menu radius box-shadow">
+                            <li><a href="javascript:;" data-val="default" title="默认（黑色）">默认（黑色）</a></li>
+                            <li><a href="javascript:;" data-val="blue" title="蓝色">蓝色</a></li>
+                            <li><a href="javascript:;" data-val="green" title="绿色">绿色</a></li>
+                            <li><a href="javascript:;" data-val="red" title="红色">红色</a></li>
+                            <li><a href="javascript:;" data-val="yellow" title="黄色">黄色</a></li>
+                            <li><a href="javascript:;" data-val="orange" title="绿色">橙色</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+<aside class="Hui-aside">
+    <input runat="server" id="divScrollValue" type="hidden" value="" />
+    <div class="menu_dropdown bk_2">
+        <dl id="menu-interface">
+            <dt><i class="Hui-iconfont">&#xe636;</i> 接口自动化<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                    <li><a _href="resource/message/interface.html" data-title="接口管理-接口自动化" href="javascript:void(0)">接口管理</a></li>
+                    <li><a _href="resource/message/message.html" data-title="报文管理-接口自动化" href="javascript:void(0)">报文管理</a></li>
+                    <li><a _href="resource/message/testSet.html" data-title="测试集管理-接口自动化" href="javascript:void(0)">测试集管理</a></li>
+                    <li><a _href="resource/message/autoTest.html" data-title="测试执行-接口自动化" href="javascript:void(0)">测试执行</a></li>
+                    <li><a _href="resource/message/report.html" data-title="测试报告-接口自动化" href="javascript:void(0)">测试报告</a></li>
+                </ul>
+            </dd>
+        </dl>
+        <dl id="menu-web">
+            <dt><i class="Hui-iconfont">&#xe6d2;</i> Web自动化测试<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                	<li><a _href="htmls/webTest/webCaseList.html" data-title="用例管理-Web自动化" href="javascript:void(0)">用例管理</a></li>
+                    <li><a _href="htmls/webTest/webObjectCategoryList.html" data-title="测试对象-Web自动化" href="javascript:void(0)">测试对象</a></li>
+                    <li><a _href="htmls/webTest/webReportList.html" data-title="测试报告-Web自动化" href="javascript:void(0)">测试报告</a></li>
+                    <li><a _href="htmls/webTest/webConfigEdit.html" data-title="测试配置-Web自动化" href="javascript:void(0)">测试配置</a></li>
+                    <li><a _href="htmls/webTest/webCaseSetList.html" data-title="测试用例集-Web自动化" href="javascript:void(0)">测试用例集</a></li>
+                    <li><a _href="htmls/webTest/webReportSetList.html" data-title="测试集报告-Web自动化" href="javascript:void(0)">测试集报告</a></li>
+                    <li><a _href="htmls/webTest/webStepPublic.html" data-title="公共步骤库-Web自动化" href="javascript:void(0)">公共步骤库</a></li>
+                    <li><a _href="htmls/webTest/rubyScripts.html" data-title="ruby脚本管理-Web自动化" href="javascript:void(0)">ruby脚本管理</a></li>
+                    <li><a _href="htmls/webTest/webScriptReport.html" data-title="ruby测试报告-Web自动化" href="javascript:void(0)">ruby测试报告</a></li>                       
+                    <li><a _href="htmls/webTest/downloadUtil.html" data-title="工具下载-Web自动化" href="javascript:void(0)">工具下载</a></li>
+                </ul>
+            </dd>
+        </dl>
+        <dl id="menu-app">
+            <dt><i class="Hui-iconfont">&#xe6a2;</i> APP自动化测试<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                </ul>
+            </dd>
+        </dl>
+        <dl id="menu-tool">
+            <dt><i class="Hui-iconfont">&#xe63c;</i> 测试工具<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                	<li><a _href="htmls/interfaceTest/A_mockList.html" data-title="接口Mock" href="javascript:void(0)">接口Mock</a></li>
+                    <li><a _href="htmls/util/formatJson.html" data-title="JSON格式化" href="javascript:void(0)">JSON格式化</a></li>                    
+                </ul>
+            </dd>
+        </dl>
+        <dl id="menu-baobiao" class="adminPower">
+            <dt><i class="Hui-iconfont">&#xe61e;</i> 测试报表<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                    <li><a _href="" data-title="接口自动化" href="javascript:void(0)">接口自动化</a></li>
+                    <li><a _href="" data-title="Web自动化" href="javascript:void(0)">Web自动化</a></li>
+                    <li><a _href="" data-title="APP自动化" href="javascript:void(0)">APP自动化</a></li>
+                </ul>
+            </dd>
+        </dl>
+        <dl id="menu-user">
+            <dt><i class="Hui-iconfont">&#xe62c;</i> 个人设置<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                    <li><a _href="htmls/user/myUserInfo.html" data-title="我的信息" href="javascript:void(0)">我的信息</a></li>
+                    <li><a _href="htmls/user/mailList.html" data-title="我的邮件" href="javascript:void(0)">我的邮件</a></li>
+                </ul>
+            </dd>
+        </dl>
+        <dl id="menu-system" class="adminPower">
+            <dt><i class="Hui-iconfont">&#xe62e;</i> 系统管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                	<li><a _href="htmls/system/autoTask.html" data-title="定时任务" href="javascript:void(0)">定时任务</a></li>
+                    <li><a _href="resource/user/user.html" data-title="用户管理" href="javascript:void(0)">用户管理</a></li>
+                    <li><a _href="resource/user/role.html" data-title="角色权限" href="javascript:void(0)">角色权限</a></li>
+                    <li><a _href="resource/system/opInterface.html" data-title="操作接口" href="javascript:void(0)">操作接口</a></li>
+                    <li><a _href="resource/system/queryDbList.html" data-title="查询数据库配置" href="javascript:void(0)">查询配置</a></li>
+                    <li><a _href="resource/system/globalSetting.html" data-title="全局配置" href="javascript:void(0)">全局配置</a></li>
+                </ul>
+            </dd>
+        </dl>
+    </div>
+</aside>
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
+<section class="Hui-article-box">
+    <div id="Hui-tabNav" class="Hui-tabNav hidden-xs">
+        <div class="Hui-tabNav-wp">
+            <ul id="min_title_list" class="acrossTab cl">
+                <li class="active"><span title="我的工作台" data-href="A_welcome.html">我的工作台</span><em></em></li>
+            </ul>
+        </div>
+        <div class="Hui-tabNav-more btn-group"><a id="js-tabNav-prev" class="btn radius btn-default size-S" href="javascript:;"><i class="Hui-iconfont">&#xe6d4;</i></a><a id="js-tabNav-next" class="btn radius btn-default size-S" href="javascript:;"><i class="Hui-iconfont">&#xe6d7;</i></a></div>
+    </div>
+    <div id="iframe_box" class="Hui-article">
+        <div class="show_iframe">
+            <div style="display:none" class="loading"></div>
+            <iframe scrolling="yes" frameborder="0" src="welcome.html" name="welcome"></iframe>
+        </div>
+    </div>
+    <input type="hidden" id="user_id"/>
+</section>
+<script type="text/javascript" src="libs/jquery/1.9.1/jquery.js"></script>
+<script type="text/javascript" src="libs/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="libs/h-ui/js/H-ui.js"></script>
+<script type="text/javascript" src="libs/h-ui.admin/js/H-ui.admin.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+    	$(".openIframeNew").on("click",function(){
+    		Hui_admin_tab(this);
+    	});   	      	
+    });
+
+    function to_myTask(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+   
+    //手动点击logout会清除登录信息cookie
+    function to_logout(){
+    	$.get("user-logout",function(data){
+    		if(data.returnCode==0){
+    			clearCookie("username");
+    			clearCookie("password");
+    			window.location.href="login.html";
+    		}
+    	});    	
+    }
+    //切换用户
+    function to_changeUser(){
+    	var loginHtml ='<form class="form form-horizontal" action="index.html" method="post" style="width:485px;">'+
+					            '<div class="row cl">'+
+					                '<label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>'+
+					                '<div class="formControls col-xs-8">'+
+					                    '<input id="username"  type="text" placeholder="账户" class="input-text size-L">'+
+					                '</div>'+
+					            '</div>'+
+					            '<div class="row cl">'+
+					                '<label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60e;</i></label>'+
+					                '<div class="formControls col-xs-8">'+
+					                    '<input id="password"  type="password" placeholder="密码" class="input-text size-L">'+
+					                '</div>'+
+					            '</div>'+
+					            '<div class="row cl">'+
+					                '<div class="formControls col-xs-8 col-xs-offset-3">'+
+					                    '<input id="loginBtn" type="button" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">&nbsp;'+
+					                    '<input name="" type="reset" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">'+
+					                    '<p id="loginTip" style="color: red;"></p>'+
+					                '</div>'+
+					            '</div>'+
+					        '</form>';
+					
+    	var index = layer.open({
+  		  title:'切换用户',
+  		  type: 1,
+  		  area: ['500px', '280px'], 
+  		  content: loginHtml
+  		});
+    	$("#loginBtn").click(userLogin);
+   	 		//监听键盘回车事件
+   		 $(document).keyup(function (event) {
+   		 var keycode = event.which;
+   		 if(keycode==13){
+   			 $("#loginBtn").click(); 
+   		 }  		 
+   	 });
+   		$("#username").trigger("focus").trigger("select");
+    }
+    
+    function userLogin(){
+        var username = $("#username").val();
+        var password = $("#password").val();
+        var tipMsg = $("#loginTip");
+        if(username!="" && username!=null && password!="" && password!=null){
+            $.post("user-toLogin",{
+                username:username,
+                password:password
+            },function(data){
+                if(data.returnCode==0){
+                	location.reload();
+                }else if (data.returnCode==2){
+                    layer.alert(data.msg, {icon: 4}); 
+                }else {
+                	 tipMsg.text(data.msg);
+                }
+            });
+        }else{
+            tipMsg.text("请填写完整再提交登陆");
+        }
+    }
+    
+</script>
+</body>
+</html>

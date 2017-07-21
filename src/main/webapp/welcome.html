@@ -1,0 +1,176 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="libs/html5.js"></script>
+    <script type="text/javascript" src="libs/respond.min.js"></script>
+    <script type="text/javascript" src="libs/PIE_IE678.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="libs/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="libs/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="libs/Hui-iconfont/1.0.7/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="libs/icheck/icheck.css" />
+    <link rel="stylesheet" type="text/css" href="libs/h-ui.admin/skin/default/skin.css" id="skin" />
+    <!--[if IE 6]>
+    <script type="text/javascript" src="libs/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <title>我的工作台</title>
+</head>
+<body>
+<div class="page-container">
+    <p class="f-20 text-success"><span id="group_name"></span>-<span id="real_name"></span>,欢迎你登陆神州数码自动化测试平台！</p>
+    <p >上次登录时间：<span id="last_login_time"></span></p>
+    <table class="table table-border table-bordered table-bg">
+        <thead>
+        <tr>
+            <th colspan="7" scope="col">我的测试统计</th>
+        </tr>
+        <tr class="text-c">
+            <th>统计</th>
+            <th>测试项目</th>
+            <th>测试方案</th>
+            <th>测试结果</th>
+            <th>测试报告</th>
+            <th>测试模板</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="text-c">
+            <td>总数</td>
+            <td>92</td>
+            <td>9</td>
+            <td>0</td>
+            <td>8</td>
+            <td>20</td>
+        </tr>
+        <tr class="text-c">
+            <td>今日</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr class="text-c">
+            <td>昨日</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr class="text-c">
+            <td>本周</td>
+            <td>2</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr class="text-c">
+            <td>本月</td>
+            <td>2</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        </tbody>
+    </table>
+    <hr><br>
+    <h3>&nbsp;系统公告</h3>
+    <p id="notice"></p>
+</div>
+<footer class="footer mt-20">
+    <p>Copyright &copy;2016 神州数码-性能测试 All Rights Reserved.<br>
+        感谢<a href="http://www.h-ui.net/" target="_blank" title="H-ui前端框架">H-ui前端框架</a>提供前端技术支持</p>
+</footer>
+<script type="text/javascript" src="libs/jquery/1.9.1/jquery.js"></script>
+<script type="text/javascript" src="libs/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="libs/h-ui/js/H-ui.js"></script>
+<script>
+    $(document).ready(function(){
+    	getUserInfo();   
+    });
+    
+    function getUserInfo(){
+    	var userInfo = {};
+    	var lastLoginTime = "";
+    	var df = $.Deferred();
+    	df.done(function(){
+    		if (!($.isEmptyObject(userInfo))) {
+    			getSetting();       
+    	    	getMailNum(); 
+    	    	//setInterval(getMailNum,15000); 
+    			$("#group_name").text(userInfo.role.roleGroup);
+            	$("#real_name").text(userInfo.realName);
+            	$("#last_login_time").text(lastLoginTime);
+                parent.$("#role_name").text(userInfo.role.roleName);
+                parent.$("#real_name").text(userInfo.realName);
+                parent.$("#user_id").val(userInfo.userId);
+                
+                if (userInfo.role.roleName != "admin") {
+                	parent.$(".adminPower").css("display","none");
+                }
+    		}
+    	});
+    	$.post("user-getLoginUserInfo",function(data) {
+    		if (data.returnCode == 0) {
+    			userInfo = data.data;
+    			lastLoginTime = data.lastLoginTime;
+    			df.resolve();
+    		} else if (data.returnCode == 7) {
+    			var username = getCookie("username");
+            	var password = getCookie("password");
+            	if (username!=null&&password != null) {
+            		$.post("user-toLogin",{
+                        username:username,
+                        password:password
+                    },function(data) {
+                        if (data.returnCode == 0) {
+                        	userInfo = data.data;
+                        	lastLoginTime = data.lastLoginTime;
+                        	df.resolve();
+                        } else {
+                        	parent.window.location.href="login.html";
+                        }
+                    });
+            	} else {
+            		parent.window.location.href = "login.html";
+            	}
+    		}else{
+    			parent.window.location.href = "login.html";
+    		}	
+    		
+    	});
+    }
+    
+    //获取设置
+    function getSetting() {
+    	$.get("global-getWebSettings",function(data) {
+       		if(data.returnCode == 0){			
+       			$("#notice").text(data.notice);
+       			parent.$("#version").text("V"+data.version);
+       		}
+       	});
+    }
+    
+	//获取当前用户的未读邮件数量
+	function getMailNum(){
+		$.get("mail-getNoReadMailNum",function(data) {
+			if (data.returnCode === 0 && data.mailNum !== 0) {
+				parent.$(".noReadMailNum").text(data.mailNum);
+			} else {
+				parent.$(".noReadMailNum").text("");
+			}
+		});
+	}
+</script>
+</body>
+</html>

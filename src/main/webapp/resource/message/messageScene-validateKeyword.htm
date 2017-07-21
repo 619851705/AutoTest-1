@@ -1,0 +1,31 @@
+<div class="page-container">
+	<div class="cl pd-5 bg-1 bk-gray"> <span class="r"> <a href="javascript:;" onclick="saveValidateJson();" class="btn btn-primary radius">保存更新</a></span></div>
+	<span style="color:red;">说明：在返回报文中通过指定的左右边界来关联关键字,设置取值顺序获取指定位置的关键字,详细使用请参考<a href='#'>报文验证手册</a></span>
+	<input type="hidden" id="parameterName"/>
+	<input type="hidden" id="validateId"/>
+	<div class="row cl" style="margin-top: 14px;margin-bottom: 8px;">
+		<label class="form-label col-xs-5 col-sm-4">左边界：</label>
+		<div class="formControls col-xs-7 col-sm-8">
+			<input type="text" class="input-text" id="LB" placeholder="关联左边界">
+		</div>
+	</div>
+	<div class="row cl" style="margin-bottom: 8px;">
+		<label class="form-label col-xs-5 col-sm-4">右边界：</label>
+		<div class="formControls col-xs-7 col-sm-8">
+			<input type="text" class="input-text" id="RB" placeholder="关联右边界">
+		</div>
+	</div>
+	<div class="row cl" style="margin-bottom: 8px;">
+		<label class="form-label col-xs-5 col-sm-4">取值顺序(不需要请设置为1)：</label>
+		<div class="formControls col-xs-7 col-sm-8">
+			<input type="hidden" class="input-text" id="ORDER" value="1"/>
+			<a style="text-decoration:none" class="ml-5" onClick="reduceSeq();" href="javascript:;" title="减少"><i class="Hui-iconfont">&#xe6a1;</i></a>&nbsp;&nbsp;<span id="objectSeqText" >1</span>&nbsp;<a style="text-decoration:none" class="ml-5" onClick="addSeq();" href="javascript:;" title="增加"><i class="Hui-iconfont">&#xe600;</i></a>
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-5 col-sm-4">预期结果验证值：</label>
+		<div class="formControls col-xs-7 col-sm-8">
+			<textarea style="height: 80px;" class="textarea radius" id="validateValue" placeholder="使用  #入参节点路径# 来使用入参节点值"></textarea>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<LINK rel="Bookmark" href="/favicon.ico" >
+<LINK rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="../../libs/html5.js"></script>
+<script type="text/javascript" src="../../libs/respond.min.js"></script>
+<script type="text/javascript" src="../../libs/PIE_IE678.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="../../libs/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../../libs/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../../libs/Hui-iconfont/1.0.7/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../../libs/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../../css/dcits.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>测试执行</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 接口自动化 <span class="c-gray en">&gt;</span> 测试执行</nav>
+<div class="page-container">
+	<form class="form form-horizontal" id="form-article-add">
+		<div id="tab-system" class="HuiTab">
+			<div class="tabBar cl"><span>开始测试</span><span>测试说明</span><span>测试设置</span></div>
+			<!-- START -->
+			<div class="tabCon">			
+				<div class="row cl">
+					<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+						<button class="btn btn-primary radius" type="button" id="choose-test-set">测试集测试</button>&nbsp;&nbsp;
+						<button class="btn btn-primary radius" type="button" id="prepare-total-test">全量测试</button>
+					</div>
+				</div>	
+				<div class="row cl">
+					<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2" id="testTips">
+						
+					</div>
+				</div>
+				<div class="row cl">
+					<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2" id="result-params">
+						<p><span>测试场景总数：</span><span id="total-count"></span></p>
+						<p><span>当前测试完成数：</span><span id="current-complete-count"></span></p>
+						<p><span>当前成功数：</span><span id="current-success-count"></span></p>
+						<p><span>当前失败数：</span><span id="current-fail-count"></span></p>
+						<p><span>当前停止数：</span><span id="current-stop-count"></span></p>
+					</div>
+				</div>
+			</div>
+			<!-- END -->
+			
+			<!-- STRAT -->
+			<div class="tabCon">
+				测试有关的说明
+			</div>
+			<!-- END -->
+			
+			<!-- STRAT -->
+			<div class="tabCon">
+				<input type="hidden" name="configId" id="configId">
+				<input type="hidden" name="userId" id="userId">
+				
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">接口地址选择：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box radius">
+						  <select class="select" size="1" id="requestUrlFlag" name="requestUrlFlag">
+						    <option value="0">默认选择</option>
+						    <option value="1">使用接口设置的mock地址</option>
+						    <option value="2">使用接口设置的real地址</option>
+						  </select>
+						</span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">Http连接超时：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="connectTimeOut" class="input-text radius" name="connectTimeOut">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">Http读取超时：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text radius" id="readTimeOut" name="readTimeOut">
+					</div>
+				</div>				
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">测试前检查数据：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box radius">
+						  <select class="select" size="1" id="checkDataFlag" name="checkDataFlag">
+						    <option value="0">检查</option>
+						    <option value="1">不检查</option>
+						  </select>
+						</span>
+					</div>
+				</div>					
+				<div class="row cl">
+					<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+						<button class="btn btn-primary radius" type="button" id="update-option"><i class="Hui-iconfont">&#xe632;</i>保存</button>
+						<button class="btn btn-default radius" type="button" id="reset-option">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+					</div>
+				</div>
+			</div>
+			<!-- END -->			
+		</div>		
+	</form>
+</div>
+<script id="show-test-set" type="text/x-handlebars-template">
+	<div style="padding:20px;">
+	<table class="table table-border table-bordered table-bg">
+		<thead>
+			<tr class="text-c">
+				<th width="15%">ID</th>
+				<th width="50%">名称</th>
+				<th width="20%">场景数</th>
+				<th width="15%">操作</th>
+			</tr>
+		</thead>
+		<tbody>	
+			{{#each this}}
+			<tr class="text-c">
+				<td>{{setId}}</td>
+				<td class="ellipsis"><span title="{{setName}}">{{setName}}</span></td>
+				<td>{{sceneNum}}</td>
+				<td><a href="javascript:;" onclick="batchTest('{{setId}}');" class="btn btn-danger size-S radius">选择</a></td>
+			</tr>
+			{{/each}}
+		</tbody>		
+	</table>	
+	</div>
+</script>
+<script type="text/javascript" src="../../libs/jquery/1.9.1/jquery.js"></script>
+<script type="text/javascript" src="../../libs/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="../../libs/jquery.validation/1.14.0/jquery.validate.min.js"></script> 
+<script type="text/javascript" src="../../libs/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="../../libs/jquery.validation/1.14.0/messages_zh.min.js"></script> 
+<script type="text/javascript" src="../../libs/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="../../libs/h-ui/js/H-ui.js"></script>
+<script type="text/javascript" src="../../libs/h-ui.admin/js/H-ui.admin.js"></script>
+<script type="text/javascript" src="../../libs/handlebars.js"></script>
+<script type="text/javascript" src="../../js/jquery.spin.merge.js"></script>
+<script type="text/javascript" src="../../js/dcits.js"></script>
+</body>
+</html>

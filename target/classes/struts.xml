@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+ 	<!-- 指定spring为对象工厂 -->
+	<constant name="struts.objectFactory" value="spring" />
+	<!--指定web应用的默认编码 -->
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<!-- 关闭动态方法请求 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <!-- 开发模式 -->
+    <constant name="struts.devMode" value="false" />
+	<package name="dcitsManager" namespace="/" extends="json-default">   
+		
+		 <interceptors>
+			<interceptor-stack name="myPrepareInterceptorsStack">
+				<!-- 参数自动注入 -->
+    			<interceptor-ref name="paramsPrepareParamsStack">
+    				<param name="prepare.alwaysInvokePrepare">false</param>
+    			</interceptor-ref>
+    			<!-- 异常处理 -->
+    			<interceptor-ref name="defaultStack">  
+  					<param name="exception.logEnabled">true</param>  
+  					<param name="exception.logLevel">debug</param>  
+				</interceptor-ref>
+    		</interceptor-stack>
+			<!-- 声明自定义拦截器 接口权限相关-->
+			<interceptor name="callMethodInterceptor"
+				class="com.dcits.interceptor.CallMethodInterceptor"></interceptor>
+		</interceptors>	
+		
+		<default-interceptor-ref name="myPrepareInterceptorsStack"/>
+		
+		
+		
+		<!-- 全局处理结果,跳转到处理异常或者错误情况下的action -->
+		<global-results>
+			<!-- 用户没有登录时 -->
+			<result name="usernotlogin" type="chain">
+				noLoginJSON
+			</result>
+			<!-- 出现系统错误 -->
+			<result name="error" type="chain">
+				errorJSON
+			</result>
+			<!-- 当前操作接口被禁止调用 -->
+			<result name="opisdisable" type="chain">
+				opDisableJSON
+			</result>
+			<!-- 当前用户没有权限 -->
+			<result name="usernotpower" type="chain">
+				noPowerJSON
+			</result>
+			<!-- 未定义的接口 -->
+			<result name="opnotfound" type="chain">
+				opNotfoundJSON
+			</result>
+		</global-results>
+		
+		<!-- 全局异常处理结果 -->
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
+		
+		<!-- 该action主要返回各种报错的json格式信息 -->
+		<action name="*JSON" class="interceptorAction" method="{1}">
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+		</action>
+		
+		<!--用户相关-->			
+		<action name="user-*" class="userAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+		</action>		
+		
+		<!-- 用户邮件 -->
+		<action name="mail-*" class="mailAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+		</action>
+		
+		<!-- 全局设置-->
+		<action name="global-*" class="globalSettingAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+		</action>
+		
+		<!-- 操作接口-->
+		<action name="op-*" class="operationInterfaceAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+			<result type="json" name="check">
+				<param name="root">checkNameFlag</param>
+			</result>
+		</action>
+		
+		<!-- 角色管理-->
+		<action name="role-*" class="roleAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+			<result type="json" name="check">
+				<param name="root">checkNameFlag</param>
+			</result>
+		</action>
+		
+		<!-- 查询数据库 -->
+		<action name="db-*" class="dataDBAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+		</action>
+		
+		<!-- 接口自动化 -->
+		
+		<!-- 接口 -->
+		<action name="interface-*" class="interfaceInfoAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+			<result type="json" name="check">
+				<param name="root">checkNameFlag</param>
+			</result>
+		</action>
+		
+		<!-- 参数 -->
+		<action name="param-*" class="parameterAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+		</action>
+		
+		<!-- 报文 -->
+		<action name="message-*" class="messageAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+		</action>
+		
+		<!-- 报文场景 -->
+		<action name="scene-*" class="messageSceneAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+		</action>
+		
+		<!-- 验证规则 -->
+		<action name="validate-*" class="sceneValidateRuleAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+		</action>
+		
+		<!-- 接口测试 -->
+		<action name="test-*" class="autoTestAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+		</action>
+		
+		<!-- 测试数据 -->
+		<action name="data-*" class="testDataAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+			<result type="json" name="check">
+				<param name="root">checkNameFlag</param>
+			</result>
+		</action>
+		
+		<!-- 测试集 -->
+		<action name="set-*" class="testSetAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+			<result type="json" name="check">
+				<param name="root">checkNameFlag</param>
+			</result>
+		</action>
+		
+		<!-- 测试报告 -->
+		<action name="report-*" class="testReportAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+		</action>
+		
+		<!-- 测试详情 -->
+		<action name="result-*" class="testResultAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+		</action>
+		
+	</package>
+
+</struts>

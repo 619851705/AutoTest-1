@@ -1,0 +1,20 @@
+{
+	"HTTP":{
+	    "Headers":{
+	    },
+	    "Authorization":{
+	    },
+	    "Method":"post",
+	    "ConnectTimeOut":"",
+	    "ReadTimeOut":"" 
+	},
+	"Socket":{
+		"ConnectTimeOut":"",
+	    "ReadTimeOut":"" 
+	},
+	"WebService":{
+	    "ConnectTimeOut":"",
+	    "Username":"",
+	    "Password":""
+	}
+}

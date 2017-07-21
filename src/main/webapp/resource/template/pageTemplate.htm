@@ -1,0 +1,94 @@
+<!-- ["姓名","学号","年龄"] -->
+<!-- list表格头 -->
+<script id="table-thead-template" type="text/x-handlebars-template">	
+	{{#each this}}
+		<th>{{this}}</th>
+	{{/each}}
+</script>
+   
+<!-- 
+	[{
+		type:"success",
+		size:"S",
+		markClass:"",
+		iconFont:"",
+		name:""
+	},{}] 
+-->  
+<!-- 文字图标按钮模板 -->
+<script id="btn-text-template" type="text/x-handlebars-template">
+    {{#each this}}
+		<a href="javascript:;" class="btn btn-{{type}} radius size-{{size}} {{markClass}}" id="{{id}}"><i class="Hui-iconfont">{{{iconFont}}}</i> {{name}}</a>
+    {{/each}}
+</script>
+
+
+<!-- 
+[{
+	title:"",
+	markClass:"",
+	iconFont:""	
+},{}]
+ -->
+<!-- 图标按钮模板 -->
+<script id="btn-icon-template" type="text/x-handlebars-template">
+    {{#each this}}
+		<a style="text-decoration:none" class="ml-5 {{markClass}}" href="javascript:;" title="{{title}}" id="{{id}}"><i class="Hui-iconfont">{{{iconFont}}}</i></a> 
+    {{/each}}
+</script>
+   
+<!-- edit页面各表单控件模板 -->  
+<script id="form-control-template" type="text/x-handlebars-template">
+	<article class="page-container">
+	<form action="" method="post" class="form form-horizontal" id="form-edit">
+	{{#each this}}
+		{{#if label}}
+		<div class="row cl {{#if edit}}editFlag{{/if}}" {{#if edit}}style="display: none"{{/if}}>			
+			<label class="form-label col-xs-4 col-sm-3">{{#if required}}<span class="c-red">*</span>{{/if}}{{{label}}}: </label>			
+			<div class="formControls col-xs-8 col-sm-9">
+				{{#if objText}}
+					<span id="{{objText}}"></span>
+				{{/if}}	
+				{{#if input}}	
+				{{#each input}}				
+					<input type="{{#if hidden}}hidden{{else}}text{{/if}}" class="input-text radius" id="{{name}}" name="{{name}}"
+						{{#if value}}value="{{value}}"{{/if}} {{#if placeholder}}placeholder="{{placeholder}}"{{/if}}>{{#if embellish}}{{{embellish}}}{{/if}}					
+				{{/each}}	
+				{{/if}}										
+				{{#if select}}					
+				{{#each select}}					
+					<span class="select-box radius">
+			  			<select class="select" size="1" id="{{name}}" name="{{name}}">
+							{{#with option}}
+							{{#each this}}
+								<option value="{{value}}" {{selected}}>{{text}}</option>
+							{{/each}}
+							{{/with}}
+			  			</select>
+             			</span>{{#if embellish}}{{{embellish}}}{{/if}}				
+				{{/each}}
+				{{/if}}	
+				{{#if button}}						
+				{{#each button}}					
+					<input type="button"  class="btn btn-{{style}} radius {{markClass}}"  value="{{value}}" id="{{name}}"/>{{#if embellish}}{{{embellish}}}{{/if}}					
+				{{/each}}
+				{{/if}}	
+				{{#if textarea}}			
+				{{#each textarea}}					
+					<textarea class="textarea radius" {{#if placeholder}}placeholder="{{placeholder}}"{{/if}} id="{{name}}" name="{{name}}" {{#if value}}value="{{value}}"{{/if}}></textarea>{{#if embellish}}{{{embellish}}}{{/if}}						
+				{{/each}}	
+				{{/if}}						
+			</div>
+		</div>	
+	{{else}}
+		<input type="hidden" id="{{name}}" name="{{name}}" {{#if value}}value="{{value}}"{{/if}}/>
+	{{/if}}
+	{{/each}}
+	<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">&nbsp;&nbsp;<input class="btn btn-primary radius" type="button" onclick="layer.closeAll('page');" value="&nbsp;&nbsp;返回&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>	
+</article>
+</script>
