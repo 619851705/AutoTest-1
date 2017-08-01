@@ -335,7 +335,7 @@ var eventList = {
 			
 			callParameterViewHtml += '<div class="row cl"><div class="col-xs-7 col-sm-8 col-xs-offset-4 col-sm-offset-3"><input class="btn btn-danger radius" type="button" value="&nbsp;&nbsp;保存更改&nbsp;&nbsp;" id="change-call-parameter"></div></div></form></article>';
 			
-			layer_show(protocolType + "调用参数设置", callParameterViewHtml, '700', '360', 1, function(layero, index) {
+			layer_show(protocolType + "调用参数设置", callParameterViewHtml, '700', '500', 1, function(layero, index) {
 				$("#change-call-parameter").attr("layer-index", index);
 			});
 			

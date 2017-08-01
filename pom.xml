@@ -10,6 +10,8 @@
     <struts.version>2.3.15.3</struts.version>
     <hibernate.version>4.2.4.Final</hibernate.version>
     <spring.version>4.0.0.RELEASE</spring.version>
+    <axis2.version>1.6.4</axis2.version>
+    <httpclient.version>4.2.1</httpclient.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
@@ -142,6 +144,14 @@
       <artifactId>spring-webmvc</artifactId>
       <version>${spring.version}</version>
     </dependency>
+    
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-context-support</artifactId>
+	    <version>${spring.version}</version>
+	</dependency>
+    
+    
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-aop</artifactId>
@@ -234,12 +244,12 @@
     <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
-        <version>4.2.1</version>
+        <version>${httpclient.version}</version>
     </dependency>
     <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpcore</artifactId>
-        <version>4.2.1</version>
+        <version>${httpclient.version}</version>
     </dependency>
     <!-- axis2 -->
 	<dependency>  
@@ -256,27 +266,44 @@
 	<dependency>
 	    <groupId>org.apache.axis2</groupId>
 	    <artifactId>axis2-adb</artifactId>
-	    <version>1.6.4</version>
+	    <version>${axis2.version}</version>
 	</dependency>
 	
 	<dependency>
 	    <groupId>org.apache.axis2</groupId>
 	    <artifactId>axis2-kernel</artifactId>
-	    <version>1.6.4</version>
+	    <version>${axis2.version}</version>
 	</dependency>
 	 
 	<dependency>  
 	    <groupId>org.apache.axis2</groupId>  
 	    <artifactId>axis2-transport-http</artifactId>  
-	    <version>1.6.4</version>  
+	    <version>${axis2.version}</version>  
 	</dependency>  
 	<dependency>  
 	    <groupId>org.apache.axis2</groupId>  
 	    <artifactId>axis2-transport-local</artifactId>  
-	    <version>1.6.4</version>  
+	    <version>${axis2.version}</version>  
 	</dependency>  
     
+    <!-- quartz定时任务 -->
+	<dependency>
+	    <groupId>org.quartz-scheduler</groupId>
+	    <artifactId>quartz</artifactId>
+	    <version>2.2.1</version>
+	</dependency>
+	    
+	<dependency>
+	    <groupId>org.quartz-scheduler</groupId>
+	    <artifactId>quartz-jobs</artifactId>
+	    <version>2.2.1</version>
+	</dependency>
+	    
+    
   </dependencies>
+  
+  
+  
   <repositories>
     <repository>
       <id>jahia</id>
@@ -284,6 +311,7 @@
       <url>http://maven.jahia.org/maven2</url>
     </repository>
   </repositories>
+  
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <resources>
@@ -332,4 +360,5 @@
       </plugin>
     </plugins>
   </build>
+  
 </project>

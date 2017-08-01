@@ -61,9 +61,15 @@ public class MessageKeys {
 	
 	public static final String HTTP_PARAMETER_AUTHORIZATION_PASSWORD = "Password";
 	
+	public static final String HTTP_PARAMETER_ENC_TYPE = "EncType";
+	
+	public static final String HTTP_PARAMETER_REC_ENC_TYPE = "RecEncType";
+	
 	public static final String PUBLIC_PARAMETER_CONNECT_TIMEOUT = "ConnectTimeOut";
 	
 	public static final String PUBLIC_PARAMETER_READ_TIMEOUT = "ReadTimeOut";
+	
+	
 	
 	/*responseMessage-返回报文、返回内容 
 	useTime-请求到返回过程耗时 

@@ -13,6 +13,7 @@ import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.params.ClientPNames;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -24,6 +25,7 @@ import org.apache.http.params.HttpProtocolParams;
 
 import com.dcits.business.message.bean.TestConfig;
 import com.dcits.constant.MessageKeys;
+import com.dcits.util.PracticalUtils;
 
 /**
  * 接口自动化<br>
@@ -36,7 +38,9 @@ public class HTTPTestClient extends TestClient {
 	
 	private static HttpClient client;
 	
-	private static final String HTTP_UTF_8 = "utf-8";
+	private static final String ENC_CHARSET = "utf-8";
+	
+	private static final String REC_ENC_CHARSET = "GBK";
 	
 	private static final int MAX_TOTAL_CONNECTION_COUNT = 100;
 	
@@ -48,11 +52,11 @@ public class HTTPTestClient extends TestClient {
 		HttpParams params = new BasicHttpParams();  
         //设置基本参数  
         HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);  
-        HttpProtocolParams.setContentCharset(params, HTTP_UTF_8);  
+        HttpProtocolParams.setContentCharset(params, ENC_CHARSET);  
 
         HttpProtocolParams.setUseExpectContinue(params, true);  
 
-        params.setLongParameter(ClientPNames.CONN_MANAGER_TIMEOUT, 1000);
+        params.setLongParameter(ClientPNames.CONN_MANAGER_TIMEOUT, 5000);
         //在提交请求之前 测试连接是否可用
         params.setBooleanParameter(CoreConnectionPNames.STALE_CONNECTION_CHECK, true);
        
@@ -84,10 +88,14 @@ public class HTTPTestClient extends TestClient {
 			return returnMap;
 		}
 		
+		returnMap.put(MessageKeys.RESPONSE_MAP_PARAMETER_TEST_MARK, "");
 		Map<String, Object> callParameterMap = null;
 		Map<String, String> headers = null;
 		//默认post方式
 		String method = DEFAULT_HTTP_METHOD;
+		String encType = ENC_CHARSET;
+		String recEncType = REC_ENC_CHARSET;
+		
 		try {
 			callParameterMap = getCallParameter(callParameter);
 		} catch (Exception e) {
@@ -98,52 +106,62 @@ public class HTTPTestClient extends TestClient {
 		if (callParameterMap != null) {
 			headers = (Map<String, String>) callParameterMap.get(MessageKeys.HTTP_PARAMETER_HEADER);
 			method = (String) callParameterMap.get(MessageKeys.HTTP_PARAMETER_METHOD);
+			encType = (String) callParameterMap.get(MessageKeys.HTTP_PARAMETER_ENC_TYPE);
+			recEncType = (String) callParameterMap.get(MessageKeys.HTTP_PARAMETER_REC_ENC_TYPE);
 		}
 		
 		
-		HttpResponse response = null;		
-    		
-    	long useTime = 0;
-		try {
-			    	
-			long beginTime = System.currentTimeMillis();
-			
+		HttpResponse response = null;
+		long useTime = 0;
+		HttpRequestBase request = null;	
+    	Object[] returnInfo = null;
+		try {			    			
 			if ("get".equalsIgnoreCase(method)) {
-				response = doGet(requestUrl, headers);
+				returnInfo = doGet(requestUrl, headers);
 			} else {
-				response = doPost(requestUrl, headers, requestMessage);
+				returnInfo = doPost(requestUrl, headers, requestMessage, encType);
 			}
-			long endTime = System.currentTimeMillis();
 			
-			useTime = endTime - beginTime;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			LOGGER.info("发送请求出错", e);
 			returnMap.put(MessageKeys.RESPONSE_MAP_PARAMETER_TEST_MARK, "发送报文到接口出错：" + e.getMessage());
 			returnMap.put(MessageKeys.RESPONSE_MAP_PARAMETER_STATUS_CODE, "false");	
 		}
 		
+		if (returnInfo != null) {
+			response = (HttpResponse) returnInfo[0];
+			useTime = (long) returnInfo[1];
+			request = (HttpRequestBase) returnInfo[2];
+		}
 
-		if (response != null) {
+		LOGGER.info("返回：" + response.toString());
+		
+		if (response != null) {			
 			StringBuilder returnMsg = new StringBuilder();
 
 			try {
 				InputStream is = response.getEntity().getContent();
-				Scanner scan = new Scanner(is, "utf-8");
+				Scanner scan = new Scanner(is, (PracticalUtils.isNormalString(recEncType) ? recEncType : REC_ENC_CHARSET));
 				while (scan.hasNext()) {
 					returnMsg.append(scan.nextLine());
-				}
-				returnMap.put(MessageKeys.RESPONSE_MAP_PARAMETER_MESSAGE, returnMsg.toString());
+				}				
 			} catch (Exception e) {
 				// TODO: handle exception
-				returnMap.put(MessageKeys.RESPONSE_MAP_PARAMETER_MESSAGE, "");
-				returnMap.put(MessageKeys.RESPONSE_MAP_PARAMETER_TEST_MARK, "无法获取返回内容：" + e.getMessage());
+				LOGGER.info("解析返回出错", e);
+				returnMap.put(MessageKeys.RESPONSE_MAP_PARAMETER_TEST_MARK, "解析返回内容出错：" + e.getMessage());
 			}
-			
+			returnMap.put(MessageKeys.RESPONSE_MAP_PARAMETER_MESSAGE, returnMsg.toString());
 			returnMap.put(MessageKeys.RESPONSE_MAP_PARAMETER_STATUS_CODE, String.valueOf(response.getStatusLine().getStatusCode()));
 		} 
 		
+		if (request != null) {
+			request.releaseConnection();
+		}
+		
 		returnMap.put(MessageKeys.RESPONSE_MAP_PARAMETER_USE_TIME, String.valueOf(useTime));
+		
+		LOGGER.info(returnMap.toString());
 		
 		return returnMap;
 	}
@@ -170,23 +188,24 @@ public class HTTPTestClient extends TestClient {
 	 * @return
 	 * @throws Exception
 	 */
-	private HttpResponse doGet(String host, Map<String, String> headers)
-            throws Exception {    	
-  	
-    	HttpGet request = new HttpGet(buildUrl(host, "", null));
-    	
-    	if (headers != null) {
-    		for (Map.Entry<String, String> e : headers.entrySet()) {
-            	request.addHeader(e.getKey(), e.getValue());
-            }
-    	}
-        
-    	HttpResponse response = client.execute(request);
-    	
-    	request.releaseConnection();
-    	
-        return response;
-    }
+	private Object[] doGet(String host, Map<String, String> headers)
+			throws Exception {
+
+		HttpGet request = new HttpGet(buildUrl(host, "", null));
+
+		if (headers != null) {
+			for (Map.Entry<String, String> e : headers.entrySet()) {
+				request.addHeader(e.getKey(), e.getValue());
+			}
+		}
+		long beginTime = System.currentTimeMillis();
+		HttpResponse response = client.execute(request);
+		long endTime = System.currentTimeMillis();
+		
+		//request.releaseConnection();
+
+		return new Object[]{response, (endTime - beginTime), request};
+	}
 	
 	/**
 	 * post方式
@@ -196,7 +215,7 @@ public class HTTPTestClient extends TestClient {
 	 * @return
 	 * @throws Exception
 	 */
-	private HttpResponse doPost(String host, Map<String, String> headers, String body)
+	private Object[] doPost(String host, Map<String, String> headers, String body, String charSet)
             throws Exception {    	
 
     	HttpPost request = new HttpPost(buildUrl(host, "", null));
@@ -209,14 +228,14 @@ public class HTTPTestClient extends TestClient {
         
 
         if (StringUtils.isNotBlank(body)) {
-        	request.setEntity(new StringEntity(body, HTTP_UTF_8));
+        	request.setEntity(new StringEntity(body, (PracticalUtils.isNormalString(charSet) ? charSet : ENC_CHARSET)));
         }
-
+        long beginTime = System.currentTimeMillis();
         HttpResponse response = client.execute(request);
+        long endTime = System.currentTimeMillis();
+    	//request.releaseConnection();
     	
-    	request.releaseConnection();
-    	
-        return response;
+    	return new Object[]{response, (endTime - beginTime), request};
     }
 	
 	/**
@@ -246,7 +265,7 @@ public class HTTPTestClient extends TestClient {
         			sbQuery.append(query.getKey());
         			if (!StringUtils.isBlank(query.getValue())) {
         				sbQuery.append("=");
-        				sbQuery.append(URLEncoder.encode(query.getValue(), HTTP_UTF_8));
+        				sbQuery.append(URLEncoder.encode(query.getValue(), ENC_CHARSET));
         			}        			
                 }
         	}

@@ -234,7 +234,8 @@ test_mode varchar(10),
 finish_flag char(1),
 start_time datetime,
 finish_time datetime,
-user_id int
+user_id int,
+mark text
 );
 alter table at_test_report add constraint at_test_report_fk_user_id foreign key(user_id) references at_user(user_id);
 

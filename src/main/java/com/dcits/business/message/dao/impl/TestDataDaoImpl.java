@@ -27,6 +27,7 @@ public class TestDataDaoImpl extends BaseDaoImpl<TestData> implements TestDataDa
 		return (TestData) getSession().createQuery(hql).setInteger("messageSceneId", messageSceneId).setString("dataDiscr", dataDiscr).uniqueResult();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<TestData> getDatasByScene(Integer messageSceneId, int count) {
 		// TODO Auto-generated method stub

@@ -70,7 +70,7 @@ public class StrutsUtils {
 	 * <br>searchValue 全局搜索条件
 	 * <br>dataParams List&lt;String&gt; 当前所有的展示字段
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static Map<String,Object> getDTParameters(Class clazz) {
 		
 		Map<String,Object> returnMap = new HashMap<String,Object>();		

@@ -51,12 +51,7 @@ public class TestDataAction extends BaseAction<TestData> {
 	
 	@Autowired
 	private MessageSceneService messageSceneService;
-	
-	/**
-	 * 批量导入测试数据
-	 */
-	/**列对应的参数Id*/
-	private String ids;
+
 	/**列对应的path,不带顶级节点名TopRoot,需要自己加*/
 	private String paths;
 	/**批量数据内容,逗号分隔*/
@@ -104,6 +99,7 @@ public class TestDataAction extends BaseAction<TestData> {
 	}
 	
 	//获取设置参数数据时需要用到的相关数据
+	@SuppressWarnings("unchecked")
 	public String getSettingData() {
 		
 		Message msg = messageSceneService.get(messageSceneId).getMessage();
@@ -164,6 +160,7 @@ public class TestDataAction extends BaseAction<TestData> {
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public String importDatas() {
 		MessageScene scene = messageSceneService.get(messageSceneId);
 		
@@ -245,9 +242,6 @@ public class TestDataAction extends BaseAction<TestData> {
 	
 	
 	/******************************************GET-SET********************************************/
-	public void setIds(String ids) {
-		this.ids = ids;
-	}
 	
 	public void setPaths(String paths) {
 		this.paths = paths;

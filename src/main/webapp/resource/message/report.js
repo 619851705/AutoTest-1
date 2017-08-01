@@ -12,7 +12,7 @@ var REPORT_DEL_URL = "report-del";
 
 
 var templateParams = {
-		tableTheads:["测试集", "场景数", "成功数", "失败数", "异常数", "进度", "开始时间", "结束时间", "测试人","操作"],
+		tableTheads:["测试集", "场景数", "成功数", "失败数", "异常数", "进度", "开始时间", "结束时间", "测试人" ,"备注", "操作"],
 		btnTools:[{
 			type:"primary",
 			size:"M",
@@ -118,6 +118,7 @@ var columnsSetting = [
 						}
 					},
 					{"data":"createUserName"},
+					ellipsisData("mark"),
 					{
 						"data":null,
                         "render":function(data, type, full, meta){
@@ -191,7 +192,7 @@ var mySetting = {
 			listUrl:REPORT_LIST_URL,
 			tableObj:".table-sort",
 			columnsSetting:columnsSetting,
-			columnsJson:[0,2,3,,4,5,6,7,11]			
+			columnsJson:[0,2,3,4,5,6,7,12]			
 		},
 		templateParams:templateParams	
 };

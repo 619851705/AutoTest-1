@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<!-- saved from url=(0021)http://xmlviewer.org/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>XML格式化/解析工具</title>
+<link rel="stylesheet" href="./static/codemirror.css">
+<link rel="stylesheet" href="./static/show-hint.css">
+<link rel="stylesheet" type="text/css" href="./static/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="./static/customize-template.css">
+<script async="" src="./static/analytics.js"></script>
+<script type="text/javascript" src="./static/jquery-1.9.1.min.js"></script>
+
+<style type="text/css">
+      .CodeMirror { border: 1px solid #eee; }
+</style>
+<style>
+    .tree {
+   
+    }
+.tree li {
+    list-style-type:none;
+    margin:0;
+    padding:14px 5px 0 11px;
+    position:relative
+}
+.tree li::before, .tree li::after {
+    content:'';
+    left:-13px;
+    position:absolute;
+    right:auto
+}
+.tree li::before {
+    border-left:1px dashed #999;
+    bottom:50px;
+    height:100%;
+    top:0;
+    width:1px
+}
+.tree li::after {
+    border-top:1px dashed #999;
+    height:20px;
+    top:25px;
+    width:25px
+}
+.tree li span {
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+    border:1px solid #999;
+    border-radius:6px;
+    display:inline-block;
+    padding:3px 8px;
+    text-decoration:none
+}
+
+.tree li.parent_li>span {
+    cursor:pointer;
+    color:#666
+}
+.tree> .box > .box-content > ul>li::before, .tree> .box > .box-content > ul>li::after {
+    border:0
+}
+.tree li:last-child::before {
+    height:31px
+}
+.tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
+    background:#eee;
+    border:1px solid #94a0b4;
+    color:#000
+}
+.center-vertical {
+    position:relative;
+    top:50%;
+    transform:translateY(-50%);
+}
+.span16 h1 a{
+    color:#000000;
+}
+.span16 h1 a:hover{
+    text-decoration:none;
+}
+.span16 h1 small a{
+   color:#999;
+}
+.popover.bottom .arrow:after{
+    border-width: 0 11px 11px;
+    border-bottom-color: rgba(0, 0, 0, 0.25);
+    top: -1px;
+    left: -1px;
+}
+#result_span{
+    padding-left: 12px;
+}
+@media all and (min-width:260px) and (max-width:768px){
+    .span16 small{
+        display: none;
+    }
+    .span7{
+        width: 96%;
+    }
+    button#leftdivfull,#rightdivfull2{
+        display: none;
+    }
+    .span2{
+        width: 96%;
+        min-height:75px;
+    }
+    .button_row{
+        display: inline-block;
+        width: 50%;
+        float: left;
+        height: 38px;
+        text-align: center;
+    }
+    button#rightdivfull{
+            display: none;
+    }
+    #to1,#to2{
+        clear: both;
+        margin-top: 8px;
+    }
+    textarea#from{
+        height: 350px;
+    }
+    #to1 .box-content,#to2 .box-content{
+        height: 350px;
+    }
+    #shareDiv{
+        display: none;
+    }
+    #shareDiv2{
+        display: inline-block;
+    }
+
+}
+@media all and (min-width:769px){
+    
+    div#centerdiv{
+        margin-top:130px;
+        margin-left:27px;
+    }
+    #to1,#to2{
+        margin-left:15px;
+    }
+    .button_row{
+        display: block;
+    }
+    textarea#from{
+        height: 600px;
+    }
+    #to1 .box-content,#to2 .box-content{
+        height: 600px;
+    }
+    .button_row{
+        display: block;
+        line-height: 62px;
+    }
+    #shareDiv2{
+        display: none;
+    }
+    
+}
+    .st_facebook{
+        background-image: url(img/facebook.png);
+        height: 32px;
+        width: 32px;
+        display: inline-block;
+        margin-right: 4px;
+        cursor: pointer;
+    }
+    .st_twitter{
+        background-image: url(img/twitter.png);
+        height: 32px;
+        width: 32px;
+        display: inline-block;
+        margin-right: 4px;
+        cursor: pointer;
+    }
+    .st_linkedin{
+        background-image: url(img/linkedin.png);
+        height: 32px;
+        width: 32px;
+        display: inline-block;
+        margin-right: 4px;
+        cursor: pointer;
+    }
+    .st_pinterest{
+        background-image: url(img/pinterest.png);
+        height: 32px;
+        width: 32px;
+        display: inline-block;
+        cursor: pointer;
+    }
+    .popover-content{
+        text-align: center;
+
+    }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="span16" style="padding-top:8px;">
+            <h1><a href="./static/formatXml.html">XML Viewer</a> <small>XML Viewer &amp; Formatter</small>
+            </h1>            
+        </div>
+    </div>
+    <div class="row"><hr style=" margin-left: 30px;"></div>
+    <div class="row">
+    
+        <div class="span7">
+            <div class="box pattern">
+                <div class="box-header" style="height:42px;">&nbsp;&nbsp;&nbsp;&nbsp;XML Input
+                    <button id="leftdivclear" class="btn btn-box-right" data-original-title="Clear" data-placement="top" rel="tooltip" style="margin-left:5px;"><i class="glyphicon glyphicon-ban-circle"></i></button>
+                    <button id="leftdivfull" class="btn btn-box-right" data-original-title="Full Screen" data-placement="top" rel="tooltip" style="margin-left:5px;"><i class="glyphicon glyphicon-resize-full"></i></button>
+                    <button id="leftdivimport" class="btn btn-box-right" data-original-title="Sample" data-placement="top" rel="tooltip" style="margin-left:5px;"><i class="glyphicon glyphicon-import"></i></button>
+                </div>
+                <div class="box-content" style="padding:0;">                   
+                    <textarea id="from" class="form-control" style="border: none; margin-bottom: 0px; display: none;" placeholder="Please enter the XML string or URL"></textarea>
+                    	<div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 5px; left: 35px;">
+                    		<textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea>
+                    	</div>
+                    	<div class="CodeMirror-vscrollbar" cm-not-content="true">
+                    	<div style="min-width: 1px; height: 0px;">
+                    </div>
+                    </div>
+                    <div class="CodeMirror-hscrollbar" cm-not-content="true">
+                    	<div style="height: 100%; min-height: 1px; width: 0px;">
+                    		</div>
+                    		</div>
+                    		<div class="CodeMirror-scrollbar-filler" cm-not-content="true">
+                    			</div>
+                    			<div class="CodeMirror-gutter-filler" cm-not-content="true">
+                    				</div>
+
+                </div>
+            </div>
+        </div>
+        <div class="span2" id="centerdiv">
+
+        <div class="button_row">    
+            <button class="btn btn-default" id="tojson" style="width:108px;"><i class="glyphicon glyphicon-chevron-right"></i><span>To Json</span></button>
+        </div>
+
+        <div class="button_row">
+            <button class="btn btn-info" id="toformat">&nbsp;&nbsp;<i class="glyphicon glyphicon-align-center"></i><span>Format</span>&nbsp;&nbsp;</button>
+        </div>   
+        
+        <div class="button_row">
+            <button class="btn btn-default" id="tocompress" style="width:108px;"><i class="glyphicon glyphicon-compressed"></i><span>Minify</span></button>
+        </div>   
+        
+        <div class="button_row">    
+            <button class="btn btn-success" id="totree"><i class="glyphicon glyphicon-tree-conifer"></i><span>Tree View</span></button>
+        </div>
+
+        </div>
+        <div class="tree span7" id="to1">
+            <div class="box">
+                <div class="box-header" style="height:42px;">
+                    <button id="rightdivfull" class="btn btn-box-right" data-original-title="Full Screen" data-placement="top" rel="tooltip"><i class="glyphicon glyphicon-resize-full"></i></button>
+                </div>
+                <div class="box-content" style="background-color:#ffffff; overflow:auto">
+                    <ul id="c"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="span7" id="to2" style="display:none;">
+        <div class="box">
+                <div class="box-header" style="height:42px;">
+                    <button id="rightdivfull2" class="btn btn-box-right" data-original-title="Full Screen" data-placement="top" rel="tooltip"><i class="glyphicon glyphicon-resize-full"></i></button>
+                </div>      
+                <div class="box-content" style="padding:0;"> 
+                    <textarea class="form-control" id="textarea_to" style="border:none;margin-bottom:0;"></textarea>
+                </div> 
+            </div>        
+        </div>
+    </div>
+</div>
+<script src="./static/bootstrap.min.js"></script>
+<script src="./static/bootstrap.tooltip.js"></script>
+<script src="./static/codemirror.js"></script>
+<script src="./static/show-hint.js"></script>
+<script src="./static/xml-hint.js"></script>
+<script src="./static/xml.js"></script>
+<script src="./static/closetag.js"></script>
+<script src="./static/matchbrackets.js"></script>
+<script src="./static/xml2json.js"></script>
+<script src="./static/xml-fold.js"></script>
+<script type="text/javascript">
+var to_textarea = null;
+var editor = editor2 = null;
+
+function completeAfter(cm, pred) {
+    var cur = cm.getCursor();
+    if (!pred || pred()) setTimeout(function() {
+      if (!cm.state.completionActive)
+        cm.showHint({completeSingle: false});
+    }, 100);
+    return CodeMirror.Pass;
+  }
+
+  function completeIfAfterLt(cm) {
+    return completeAfter(cm, function() {
+      var cur = cm.getCursor();
+      return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
+    });
+  }
+
+  function completeIfInTag(cm) {
+    return completeAfter(cm, function() {
+      var tok = cm.getTokenAt(cm.getCursor());
+      if (tok.type == "string" && (!/['"]/.test(tok.string.charAt(tok.string.length - 1)) || tok.string.length == 1)) return false;
+      var inner = CodeMirror.innerMode(cm.getMode(), tok.state).state;
+      return inner.tagName;
+    });
+  }
+  var editorConfig = {
+        //mode: "xml",
+        lineNumbers : true,
+        lineWrapping:true,
+        matchBrackets: true
+        
+    }
+    var editor2 = CodeMirror.fromTextArea(document.getElementById("from"), {
+        //mode: "xml",
+        lineNumbers: true,
+        autoCloseTags: true,
+        matchBrackets: true
+        
+      });
+    if (screen.width<=768) {
+        editor2.setSize('100%', 350);
+    }else{
+        editor2.setSize('100%', 600);
+    }
+</script>
+<script>
+var notenumber = 1, optbtn=0;
+var reg = /^(http|https):\/\/[^s]*/g;
+
+
+
+function UnixTimestampToDate(unixTime, timeZone) {
+    if (typeof (timeZone) == 'number')
+    {
+        unixTime = parseInt(unixTime) + parseInt(timeZone) * 60 * 60;
+    }
+    var time = new Date(unixTime * 1000);
+    var ymdhis = "";
+    ymdhis += (time.getUTCMonth()+1) + "-";
+    ymdhis += time.getUTCDate() + "-";
+    ymdhis += time.getUTCFullYear() ;
+    
+    ymdhis += " " + time.getUTCHours() + ":";
+    ymdhis += time.getUTCMinutes() + ":";
+    ymdhis += time.getUTCSeconds();
+    
+    return ymdhis;
+}
+function HTMLEncode ( str ) 
+{ 
+    var    s    =    "";  
+    if    (str.length    ==    0)   return  "";  
+    s    =    str.replace(/>/g,     "&gt;");  
+    s    =    s.replace(/</g,       "&lt;");  
+    s    =    s.replace(/>/g,       "&gt;");  
+    s    =    s.replace(/ /g,       "&nbsp;");  
+    s    =    s.replace(/\'/g,      "&#39;");  
+    s    =    s.replace(/\"/g,      "&quot;");  
+    s    =    s.replace(/\n/g,      "<br />");  
+    return    s;  
+}
+
+function parseXml(xml) {
+   var dom = null;
+   if (window.DOMParser) {
+      try { 
+         dom = (new DOMParser()).parseFromString(xml, "text/xml"); 
+      } 
+      catch (e) { dom = null; }
+   }
+   else if (window.ActiveXObject) {
+      try {
+         dom = new ActiveXObject('Microsoft.XMLDOM');
+         dom.async = false;
+         if (!dom.loadXML(xml)) // parse error ..
+
+            window.alert(dom.parseError.reason + dom.parseError.srcText);
+      } 
+      catch (e) { dom = null; }
+   }
+   else
+      alert("cannot parse xml string!");
+   return dom;
+}
+
+function fn(obj, docObj){
+    var myAttr = obj[0].attributes;
+    if( obj.children().length > 0 ){
+        var li = $("<li class='parent_li'><span><i class='glyphicon glyphicon-minus-sign'></i>&nbsp;"+ obj[0].nodeName +"</span>&nbsp;</li>");
+        $(myAttr).each(function(i){        
+            li.append("<code>@"+$(this)[0].nodeName+"="+$(this)[0].nodeValue+"</code>&nbsp;") 
+            if ($(this)[0].nodeName == 'attr' && $(this)[0].nodeValue == 'timestamp') {
+                li.find("span").html("<i class='glyphicon glyphicon-minus-sign'></i>&nbsp;"+ UnixTimestampToDate(obj[0].nodeName));
+            };
+        })
+        li.appendTo(docObj)
+        var ul = $('<ul></ul>');
+        ul.appendTo(li);
+        obj.children().each(function(i){
+            if($(this).children().length>0)
+                notenumber++;
+            fn($(this), ul);
+        })
+    }else{
+        var li2 = $("<li></li>");
+        li2.html( '<font color="#cccccc"><i class="glyphicon glyphicon-leaf"></i></font>&nbsp;<font color="##31708f" id="leaf_value">'+ HTMLEncode(obj[0].nodeName) +"</font> &nbsp;:&nbsp;<small>"+HTMLEncode(obj.text()) +'</small>').appendTo(docObj)
+        $(myAttr).each(function(i){        
+            li2.append("<div><code>@"+HTMLEncode($(this)[0].nodeName)+"="+HTMLEncode($(this)[0].nodeValue)+"</code>&nbsp;</div>") 
+            if ($(this)[0].nodeName == 'attr' && $(this)[0].nodeValue == 'timestamp') {
+                li2.find("small").html( UnixTimestampToDate(obj.text()));
+            };
+        })
+        return false;
+    }
+}
+$(document).ready(function() { 
+        $('.tree').delegate('li.parent_li > span', 'click', function (e) {
+        var children = $(this).parent('li.parent_li').find(' > ul > li');
+        if (children.is(":visible")) {
+            children.hide('fast');
+            $(this).find(' > i').addClass('glyphicon-plus-sign').removeClass('glyphicon-minus-sign');
+        } else {
+            children.show('fast');
+            $(this).find(' > i').addClass('glyphicon-minus-sign').removeClass(' glyphicon-plus-sign');
+        }
+        
+        e.stopPropagation();
+    });    
+    $("button#leftdivclear").on('click', function(e){
+        editor2.getDoc().setValue('')
+        editor.getDoc().setValue('')
+        $("ul#c").html('')  
+        if (editor!=null) {
+            editor.getDoc().setValue('')
+
+        };
+    })
+    $("button#leftdivfull").on('click', function(e){
+        if ($(this).find('i').hasClass('glyphicon-resize-full')) {
+            $(this).attr({'data-original-title':'Restore'});
+            $(this).parents('.span7').addClass('span16').removeClass('span7')
+            $(this).find('i').addClass('glyphicon-resize-small').removeClass('glyphicon-resize-full')
+            $('.span2').hide();  
+            $(".span7:visible").hide()  
+        } else {
+            $(this).attr({'data-original-title':'Full screen'});
+            $(this).parents('.span16').addClass('span7').removeClass('span16')
+            $(this).find('i').addClass('glyphicon-resize-full').removeClass('glyphicon-resize-small')
+            $('.span2').show();  
+            if (optbtn==1||optbtn==2) {
+                $("div#to2").show()
+                $("div#to1").hide()
+            }else if(optbtn==3||optbtn==0){
+                $("div#to1").show()
+                $("div#to2").hide()
+            }
+            
+        }
+    })
+
+    $("#leftdivimport").on('click', function(){
+        var sample = "<?xml version=\"1.0\" encoding=\"utf-8\"?><note><to>George</to><from>John</from><heading>Reminder</heading><body>Don't forget the meeting!</body></note>";
+        editor2.getDoc().setValue(formatxml2(xmlToString($.parseXML(sample))));
+    })
+
+    $("button#rightdivfull, button#rightdivfull2").on('click', function(e){
+        if ($(this).find('i').hasClass('glyphicon-resize-full')) {
+            $(this).attr({'data-original-title':'Restore'});
+            $(this).parents('.span7').addClass('span16').removeClass('span7')
+            $(this).find('i').addClass('glyphicon-resize-small').removeClass('glyphicon-resize-full')
+            $('.span2').hide();  
+            $(".span7:visible").hide()  
+            if (editor!=null) {
+                //editor.setSize('100%', 550)
+            };
+        } else {
+            $(this).attr({'data-original-title':'Full screen'});
+            $(this).parents('.span16').addClass('span7').removeClass('span16')
+            $(this).find('i').addClass('glyphicon-resize-full').removeClass('glyphicon-resize-small')
+            $('.span2').show();  
+            $('.span7').eq(0).show()
+            if (editor!=null) {
+                //editor.setSize('500', '550')
+            };
+            
+        }
+    })
+    $("[rel=tooltip]").tooltip();
+    $("[data-toggle=popover]").popover({
+        html : true,
+        content: function() {
+            return $("#popover-content").html();
+        } 
+
+    });
+    $("#totree").on('click', function(){
+        xmltotree(this)
+        $('.box-header span').remove()
+        $('#to1 .box-header,#to2 .box-header').prepend('<span id="result_span">'+$(this).find('span').html()+' Result:</span>');
+    })
+    $("#toformat").on('click', function(){
+        formatxml(this)
+        $('.box-header span').remove()
+        $('#to1 .box-header,#to2 .box-header').prepend('<span id="result_span">'+$(this).find('span').html()+' Result:</span>');
+    })
+    $("#tocompress").on('click', function(){
+        xmlcompress(this)
+        $('.box-header span').remove()
+        $('#to1 .box-header,#to2 .box-header').prepend('<span id="result_span">'+$(this).find('span').html()+' Result:</span>');
+    })
+    $("#tobrowse").on('click', function(){
+            $('#form-upload').remove();
+            $('body').append('<form enctype="multipart/form-data" id="form-upload" style="display:none;"><input type="file" name="file" accept="application/xml" /></form>');
+            $('#form-upload input[type=\'file\']').trigger('click');
+            if (typeof interval != 'undefined') {
+                clearInterval(interval);
+            }
+            interval = setInterval(function() {
+            if ($('#form-upload input[type=\'file\']').val() != '') {    
+                clearInterval(interval);
+                $.ajax({
+                    url: 'upload.php',
+                    type: 'post',       
+                    dataType: 'xml',
+                    data: new FormData($('#form-upload')[0]),
+                    cache: false,
+                    contentType: false,
+                    processData: false,     
+                    beforeSend: function() {
+                        $('#tobrowse').find('span').html('Loading..');
+                        $('#tobrowse').prop("disabled", true)
+                    },
+                    complete: function() {
+                        $('#tobrowse').find('span').html('Browse');
+                        $('#tobrowse').removeAttr("disabled")
+                    },  
+                    success: function(data) {
+                        if ($(data).find("errors>code").text()=='405') {
+                            alert('XML File Required!');
+                        }else
+                        {
+                           editor2.getDoc().setValue(formatxml2(xmlToString(data))); 
+                           $("ul#c").html('')
+                           if (editor == null) {
+                                to_textarea = document.getElementById("textarea_to");
+                                editor = CodeMirror.fromTextArea(to_textarea, editorConfig);
+                                if (screen.width<=768) {
+                                    editor.setSize('100%', 350);
+                                }else{
+                                    editor.setSize('100%', 600);
+                                }
+                                
+                            }
+                           editor.getDoc().setValue('')
+                        }
+                    },          
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        alert(thrownError+ xhr.responseText);
+                    }
+                });
+            }}
+            ,300);
+    })
+    if (screen.width<=768) {
+        editorConfig.lineWrapping=false;
+    }else{
+        editorConfig.lineWrapping=true;
+    }
+    $("#tojson").on('click', function(){
+        if(editor2.getDoc().getValue() == ''){
+            return false;
+        }
+        $("div#to1").hide();
+        $("div#to2").show();
+        $('.box-header span').remove()
+        $('#to2 .box-header').prepend('<span id="result_span">'+$(this).find('span').html()+' Result:</span>'); 
+        if (editor == null) {
+            to_textarea = document.getElementById("textarea_to");
+            editor = CodeMirror.fromTextArea(to_textarea, editorConfig);
+            if (screen.width<=768) {
+                editor.setSize('100%', 350);
+            }else{
+                editor.setSize('100%', 600);
+            }
+        }
+        editor.getDoc().setValue(xml2json(parseXml(editor2.getDoc().getValue()), "\t"));
+        
+    })
+    
+});
+function xmlcompress(obj){
+    optbtn=2;
+    if($.trim(editor2.getDoc().getValue()).match(reg)){
+        $('span', obj).html('Loading..');
+        $(obj).prop({"disabled":true})
+        $.ajax({
+            url : 'loadxml.php',    
+            dataType : 'xml',
+            data : {'url': editor2.getDoc().getValue()},
+            type : 'post',
+            success : function(data){
+                if($(data).find("errors>code").text() == '404'){
+                    alert('The Page is unavailable!');
+                }else if($(data).find("errors>code").text() == '405'){
+                     alert('The Page Contain Invalid XML!');   
+                }else{
+                    editor2.getDoc().setValue(formatxml2(xmlToString(data)))
+                    xmlcompress2(editor2.getDoc().getValue());
+                }
+                $('span', obj).html('Minify');
+                $(obj).prop({"disabled":false})
+            }
+        })
+    }else{
+        xmlcompress2(editor2.getDoc().getValue());
+    }
+    
+}
+
+
+function xmlcompress2(textareaval2)
+{
+    $("div#to1").hide();
+    $("div#to2").show();
+    
+    if($.trim(textareaval2)=='') return;
+    var opt2 = textareaval2.replace(/>[\s]+</g, '><')
+    opt2.replace(/[\r\n]+/g,'')
+    try{
+        var opt2 = $.parseXML(opt2);
+    }catch(e){
+        alert(e.message.split(':')[0]);
+        return;
+    }
+    opt2=xmlToString(opt2)
+    $("div#to2 textarea").val(opt2) 
+    if (editor == null) {
+            to_textarea = document.getElementById("textarea_to");
+            editor = CodeMirror.fromTextArea(to_textarea, editorConfig);
+            if (screen.width<=768) {
+                editor.setSize('100%', 350);
+            }else{
+                editor.setSize('100%', 600);
+            }
+            
+        }else{
+            editor.getDoc().setValue(opt2);
+        }
+}
+function xmlToString(xmlDoc) {  
+    if (window.ActiveXObject) {  
+        return xmlDoc.xml; 
+    } else {  
+        return (new XMLSerializer()).serializeToString(xmlDoc);  
+    }  
+}
+function formatxml(obj) {  
+    optbtn=1;
+    
+    if($.trim($('textarea#from').val()).match(reg)){
+        $('span', obj).html('Loading..');
+        $(obj).prop({"disabled":true})
+        $.ajax({
+            url : 'loadxml.php',    
+            dataType : 'xml',
+            data : {'url': editor2.getDoc().getValue()},
+            type : 'post',
+            success : function(data){
+                if($(data).find("errors>code").text() == '404'){
+                    alert('The Page is unavailable!');
+                }else if($(data).find("errors>code").text() == '405'){
+                     alert('The Page Contain Invalid XML!');   
+                }else{
+                    $('textarea#from').val(formatxml2(xmlToString(data)))
+                    var outXML = formatxml2(editor2.getDoc().getValue());
+                    $("div#to2 textarea").val(outXML);
+                }
+                $('span', obj).html('Format');
+                $(obj).prop({"disabled":false})
+            }
+        })
+    }else{
+        var opt2 = editor2.getDoc().getValue().replace(/>[\s]+</g, '><')
+        opt2.replace(/[\r\n]+/g,'')
+        try{
+            var opt2 = $.parseXML(opt2);
+        }catch(e){
+            alert(e.message.split(':')[0]);
+            return;
+        }
+        var outXML = formatxml2(editor2.getDoc().getValue())
+        $("div#to2 textarea").val(outXML);
+        if (editor == null) {
+            to_textarea = document.getElementById("textarea_to");
+            editor = CodeMirror.fromTextArea(to_textarea, editorConfig);
+            if (screen.width<=768) {
+                editor.setSize('100%', 350);
+            }else{
+                editor.setSize('100%', 600);
+            }
+        }else{
+            editor.getDoc().setValue(outXML);
+        }
+        
+      
+    }
+      
+}  
+function formatxml2(text)
+{
+    $("div#to1").hide();
+       $("div#to2").show();   
+    text = '\n' + text.replace(/(<\w+)(\s.*?>)/g, function($0, name, props) {  
+        return name + ' ' + props.replace(/\s+(\w+=)/g, " $1");  
+    }).replace(/>\s*?</g, ">\n<");  
+    text = text.replace(/\n/g, '\r').replace(/<!--(.+?)-->/g,  
+            function($0, text) {  
+                var ret = '<!--' + escape(text) + '-->';  
+                return ret;  
+            }).replace(/\r/g, '\n');  
+    var regx = /\n(<(([^\?]).+?)(?:\s|\s*?>|\s*?(\/)>)(?:.*?(?:(?:(\/)>)|(?:<(\/)\2>)))?)/mg;  
+    var node_stack = [];  
+    var output = text.replace(regx, function($0, all, name, is_begin,  
+            is_close_full1, is_close_full2, is_full1, is_full2) {  
+        var is_closed = (is_close_full1 == '/') || (is_close_full2 == '/')  
+                || (is_full1 == '/') || (is_full2 == '/');  
+        var prefix = '';  
+        if (is_begin == '!') {  
+            prefix = get_prefix(node_stack.length);  
+        } else {  
+            if (is_begin != '/') {  
+                prefix = get_prefix(node_stack.length);  
+                if (!is_closed) {  
+                    node_stack.push(name);  
+                }  
+            } else {  
+                node_stack.pop();  
+                prefix = get_prefix(node_stack.length);  
+            }  
+  
+        }  
+        var ret = '\n' + prefix + all;  
+        return ret;  
+    });  
+  
+    var outXML = output.substring(1);  
+    outXML = outXML.replace(/\n/g, '\r').replace(  
+            /(\s*)<!--(.+?)-->/g,  
+            function($0, prefix, text) {  
+                if (prefix.charAt(0) == '\r')  
+                    prefix = prefix.substring(1);  
+                text = unescape(text).replace(/\r/g, '\n');  
+                var ret = '\n' + prefix + '<!--'  
+                        + text.replace(/^\s*/mg, prefix) + '-->';  
+                return ret;  
+            });  
+    outXML = outXML.replace(/\s+$/g, '').replace(/\r/g, '\r\n');
+    return outXML;  
+}
+function get_prefix(prefixIndex) {  
+    var span = '    ';  
+    var output = [];  
+    for ( var i = 0; i < prefixIndex; ++i) {  
+        output.push(span);  
+    }  
+  
+    return output.join('');  
+}  
+
+function xmltotree(obj)
+{
+    if($.trim(editor2.getDoc().getValue()).match(reg)){
+        $('span', obj).html('Loading..');
+        $(obj).prop({"disabled":true})
+        $.ajax({
+            url : 'loadxml.php',    
+            dataType : 'xml',
+            data : {'url': editor2.getDoc().getValue()},
+            type : 'post',
+            success : function(data){
+                if($(data).find("code").text() == '404'){
+                    alert('The Page is unavailable!');
+                }else if($(data).find("code").text() == '405'){
+                     alert('The Page Contain Invalid XML!');   
+                }else{
+                    editor2.getDoc().setValue(formatxml2(xmlToString(data)))
+                    xmltotree2($('textarea#from').val());
+                    
+                }
+                $('span', obj).html('Tree View');
+                $(obj).prop({"disabled":false})
+            }
+        })
+    }else{
+        xmltotree2(editor2.getDoc().getValue());
+    }
+        
+}
+function xmltotree2(textareaval)
+{
+    
+    optbtn=3;
+    $("div#to1").show();
+    $("#c").html('')
+    $("div#to2").hide();
+    
+    if($.trim(textareaval)=='') return;
+    var opt = textareaval.replace(/>[\s]+</g, '><')
+    opt.replace(/[\r\n]+/g,'')
+    try{
+        var opt = $.parseXML(opt);
+    }catch(e){
+        alert(e.message.split(':')[0]);
+        return;
+    }
+    
+    var li = $("<li class='parent_li'><span><i class='glyphicon glyphicon-minus-sign'></i>&nbsp;"+ $(opt).find('*:first').get(0).tagName + "</span><ul id='pu'></ul></li>")
+    $('#c').append(li);
+    $(opt).find('*:first').children().each(function(i){ 
+        fn($(this), $('#c').find('ul#pu'));
+    }); 
+}
+</script>
+
+<!--[if lte IE 9]>
+<script src="js/respond.min.js"></script>
+<script src="js/html5.js"></script>
+<![endif]-->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','./static/analytics.js','ga');
+
+  ga('create', 'UA-11097370-12', 'auto');
+  ga('send', 'pageview');
+</script>
+</body></html>

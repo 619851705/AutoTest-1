@@ -6,8 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.dcits.business.message.bean.ComplexParameter;
 import com.dcits.business.message.bean.Parameter;
@@ -15,7 +13,6 @@ import com.dcits.business.message.service.ParameterService;
 import com.dcits.constant.MessageKeys;
 import com.dcits.constant.SystemConsts;
 import com.dcits.util.StrutsUtils;
-import com.google.gson.Gson;
 
 /**
  * 接口自动化<br>

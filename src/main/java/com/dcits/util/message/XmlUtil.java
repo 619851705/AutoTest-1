@@ -34,7 +34,8 @@ public class XmlUtil {
      * @param mode
      * @return
      */
-    public static Object getXmlList(String xml,int mode) throws Exception{
+    @SuppressWarnings("rawtypes")
+	public static Object getXmlList(String xml,int mode) throws Exception{
     	
     	//返回的都是子节点的map或者list
     	Map<String,String> jsonTreeMap = new HashMap<String,String>();
@@ -71,18 +72,17 @@ public class XmlUtil {
      * @param argsType
      * @return
      */
+	@SuppressWarnings("rawtypes")
 	public static String getObjectByXml(String xmlStr, String argsPath, TypeEnum argsType) {
         if(argsPath == null || argsPath.equals("") || argsType == null){return null;}
          
         Object obj = null;
         try {
             Map maps = Dom2Map(xmlStr);
-           
             //多层获取
-            if(argsPath.indexOf(".") >= 0){
-            	
+            if(argsPath.indexOf(".") >= 0){            	
                 //类型自适应
-                obj = JsonUtil.getObject(maps, argsPath, argsType);
+                obj = getObject(maps, argsPath, argsType);
             }else{ //第一层获取
                 if(argsType == TypeEnum.string){
                     obj = maps.get(argsPath).toString();
@@ -100,12 +100,106 @@ public class XmlUtil {
             return null;
         }
         i = 0;
-        if (obj!=null) {
+        if (obj != null) {
         	return obj.toString();
         } else {
         	return null;
         }
         
+    }
+	
+	
+	/**
+     * 递归获取object
+     * @param m
+     * @param key
+     * @param type
+     * @return
+     */
+	@SuppressWarnings("rawtypes")
+	public static Object getObject(Object m,String key,TypeEnum type) {
+        if(m == null){return null;}
+        Object o = null;
+        Map mp = null;
+        List ls = null;
+        try {
+            //对象层级递归遍历解析
+            if(m instanceof Map || m instanceof LinkedHashMap){
+                mp = (LinkedHashMap)m;
+                for(Iterator ite = mp.entrySet().iterator(); ite.hasNext();){  
+                    Map.Entry e = (Map.Entry) ite.next();  
+                     
+                    if(i<key.split("\\.").length && e.getKey().equals(key.split("\\.")[i])){
+                        i++;
+                        if(e.getValue() instanceof String || e.getValue() instanceof Number){
+                            if(i== key.split("\\.").length){
+                                o = e.getValue();
+                                return o;
+                            }
+                        }else if(e.getValue() instanceof LinkedHashMap){
+                            if(i== key.split("\\.").length){
+                                if(type == TypeEnum.map){
+                                    o = e.getValue();
+                                    return o;
+                                }
+                            }else{
+                                o = getObject(e.getValue(),key,type);
+                            }
+                            return o;
+                        }else if(e.getValue() instanceof ArrayList){
+                            if(i== key.split("\\.").length){
+                                if(type == TypeEnum.arrayList){
+                                    o = e.getValue();
+                                    return o;
+                                }
+                                if(type == TypeEnum.arrayMap){
+                                    o = e.getValue();
+                                    return o;
+                                }
+                            }else{
+                                o = getObject(e.getValue(),key,type);
+                            }
+                            return o;
+                        }
+                    }
+                }     
+            }
+            //数组层级递归遍历解析
+            if(m instanceof List || m instanceof ArrayList){
+                ls = (ArrayList)m;
+                for(int i=0;i<ls.size();i++){
+                    if(ls.get(i) instanceof LinkedHashMap){
+                        if(i== key.split("\\.").length){
+                            if(type == TypeEnum.map){
+                                o = ls.get(i);
+                                return o;
+                            }
+                        }else{
+                            o = getObject(ls.get(i),key,type);
+                        }
+                        return o;
+                    }else if(ls.get(i) instanceof ArrayList){
+                        if(i== key.split("\\.").length){
+                            if(type == TypeEnum.arrayList){
+                                o = ls.get(i);
+                                return o;
+                            }
+                            if(type == TypeEnum.arrayMap){
+                                o = ls.get(i);
+                                return o;
+                            }
+                        }else{
+                            o = getObject(ls.get(i),key,type);
+                        }
+                        return o;
+                    }   
+                }
+            }   
+        } catch (Exception e) {
+            System.out.println("###[Error] getObject() "+e.getMessage());
+        }
+         
+        return o;
     }
 	
 	@SuppressWarnings("rawtypes")

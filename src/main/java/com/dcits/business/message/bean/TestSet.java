@@ -51,6 +51,7 @@ public class TestSet implements Serializable {
 	/**
 	 * 包含场景数量
 	 */
+	@SuppressWarnings("unused")
 	private Integer sceneNum;
 	
 	

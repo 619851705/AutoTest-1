@@ -6,7 +6,9 @@
 	    },
 	    "Method":"post",
 	    "ConnectTimeOut":"",
-	    "ReadTimeOut":"" 
+	    "ReadTimeOut":"",
+	    "RecEncType":"UTF-8",
+	    "EncType":"UTF-8" 
 	},
 	"Socket":{
 		"ConnectTimeOut":"",

@@ -11,6 +11,7 @@ import com.dcits.business.message.service.TestResultService;
 @Service("testResultService")
 public class TestResultServiceImpl extends BaseServiceImpl<TestResult> implements TestResultService{
 	
+	@SuppressWarnings("unused")
 	private TestResultDao testResultDao;
 	
 	@Autowired

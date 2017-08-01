@@ -25,7 +25,10 @@
         <property name="finishTime" type="java.sql.Timestamp">
             <column name="finish_time" length="19" />
         </property>
-        <set name="trs" cascade="all-delete-orphan" lazy="true" inverse="true" order-by="op_time">
+        <property name="mark" type="java.lang.String">
+            <column name="mark" />
+        </property>
+        <set name="trs" cascade="all" lazy="true" inverse="true" order-by="op_time">
             <key>
                 <column name="report_id" />
             </key>

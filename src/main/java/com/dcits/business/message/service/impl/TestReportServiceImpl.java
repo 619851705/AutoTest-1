@@ -19,4 +19,10 @@ public class TestReportServiceImpl extends BaseServiceImpl<TestReport> implement
 		this.testReportDao = testReportDao;
 	}
 
+	@Override
+	public String isFinished(Integer reportId) {
+		// TODO Auto-generated method stub
+		return testReportDao.isFinished(reportId);
+	}
+
 }

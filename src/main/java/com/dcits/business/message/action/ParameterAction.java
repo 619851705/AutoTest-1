@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -28,11 +27,6 @@ import com.dcits.coretest.message.parse.MessageParse;
 @Controller
 @Scope("prototype")
 public class ParameterAction extends BaseAction<Parameter> {
-	
-	/**
-	 * LOGGER
-	 */
-	private static Logger LOGGER = Logger.getLogger(ParameterAction.class);
 
 	private static final long serialVersionUID = 1L;
 	
@@ -82,7 +76,7 @@ public class ParameterAction extends BaseAction<Parameter> {
 		ps = parameterService.findByInterfaceId(interfaceId);		
 		jsonMap.put("returnCode",ReturnCodeConsts.NO_RESULT_CODE);
 		
-		if (ps.size()>0) {
+		if (ps.size() > 0) {
 			jsonMap.put("returnCode", ReturnCodeConsts.SUCCESS_CODE);
 			jsonMap.put("data", ps);
 		}
@@ -107,7 +101,6 @@ public class ParameterAction extends BaseAction<Parameter> {
 	 * 根据传入的接口入参报文批量处理导入参数
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public String batchImportParams() {
 		MessageParse parseUtil = MessageParse.getParseInstance(messageType);
 		
@@ -128,8 +121,10 @@ public class ParameterAction extends BaseAction<Parameter> {
 		InterfaceInfo info = interfaceInfoService.get(interfaceId);	
 		
 		if (info != null) {
-			info.getParameters().addAll(params);			
-			interfaceInfoService.save(info);
+			for (Parameter p:params) {
+				p.setInterfaceInfo(info);
+				parameterService.edit(p);
+			}
 		}
 		
 		jsonMap.put("returnCode", ReturnCodeConsts.SUCCESS_CODE);

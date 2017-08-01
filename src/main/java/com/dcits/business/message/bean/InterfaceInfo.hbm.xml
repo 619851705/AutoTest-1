@@ -42,7 +42,7 @@
             <column name="last_modify_user" length="120" />
         </property>
         
-        <set name="parameters" cascade="all" lazy="true">
+        <set name="parameters" cascade="all" lazy="true" inverse="true">
         	<key column="interface_id"></key>
         	<one-to-many class="com.dcits.business.message.bean.Parameter"/>
         </set>

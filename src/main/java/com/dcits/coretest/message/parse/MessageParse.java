@@ -168,6 +168,7 @@ public abstract class MessageParse {
 	 * @param messageData
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	protected String findParameterValue (Parameter param, Map<String, Object> messageData) {
 		
 		if (messageData == null) {
@@ -209,6 +210,7 @@ public abstract class MessageParse {
 	 * @param paramsData
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	protected static Map<String, Object> parseParamsDataToMap(String paramsData) {
 		Map<String, Object> messageData = new HashMap<String, Object>();
 		

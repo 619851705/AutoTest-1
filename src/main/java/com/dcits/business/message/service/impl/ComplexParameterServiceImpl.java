@@ -11,6 +11,7 @@ import com.dcits.business.message.service.ComplexParameterService;
 @Service("complexParameterService")
 public class ComplexParameterServiceImpl extends BaseServiceImpl<ComplexParameter> implements ComplexParameterService {
 	
+	@SuppressWarnings("unused")
 	private ComplexParameterDao complexParameterDao;
 	
 	@Autowired

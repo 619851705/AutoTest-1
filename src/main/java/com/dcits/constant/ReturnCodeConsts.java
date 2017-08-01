@@ -156,4 +156,24 @@ public class ReturnCodeConsts {
 	 */
 	public static final Integer AUTO_TEST_NO_SCENE_CODE = 2931;
 	
+	//定时任务相关 824
+	
+	/**
+	 * 定时任务引擎已经被启动了<br>
+	 * '8241'
+	 */
+	public static final Integer QUARTZ_HAS_BEEN_START = 8241;
+	
+	/**
+	 * 定时任务引擎已经被停止了<br>
+	 * '8242'
+	 */
+	public static final Integer QUARTZ_HAS_BEEN_STOP = 8242;
+	
+	/**
+	 * 缺少定时规则
+	 * '8243'
+	 */
+	public static final Integer QUARTZ_NEED_CRON_EXPRESSION = 8243;
+	
 }

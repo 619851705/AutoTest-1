@@ -83,10 +83,23 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 		return getSession().createQuery(hsql).setCacheable(true).list();
 	}
 
-	public int totalCount() {
+	public int totalCount(String ...filterCondition) {
 		// TODO Auto-generated method stub
 		int count = 0;
 		String hql = "select count(t) from " + clazz.getSimpleName() + " t";
+		
+		if (filterCondition != null && filterCondition.length > 0) {
+			hql += " where ";
+			int i = 1;
+			for (String s : filterCondition) {
+				hql += s;
+				i++;
+				if (i <= filterCondition.length) {
+					hql += " and ";
+				}
+			}
+		}
+		
 		Long temp = (Long)getSession().createQuery(hql).uniqueResult();
 		if (temp != null) {
 			count = temp.intValue();
@@ -143,13 +156,13 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 			hql += " order by " + orderDataName + " " + orderType;
 		}
 		
-		LOGGER.info("The HQL String:\n" + hql);
+		LOGGER.info("The query HQL String: \n" + hql);
 	
 		pm.setDatas(getSession().createQuery(hql)
 				.setFirstResult(dataNo)
 				.setMaxResults(pageSize)
 				.setCacheable(true).list());
-		pm.setRecordCount(totalCount());
+		pm.setRecordCount(totalCount(filterCondition));
 		return pm;
 	}
 

@@ -29,7 +29,7 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 	/**
 	 * LOGGER
 	 */
-	private static final Logger LOGGER = Logger.getLogger(BaseAction.class.getName());
+	protected static final Logger LOGGER = Logger.getLogger(BaseAction.class.getName());
 	
 	/**
 	 * BaseService

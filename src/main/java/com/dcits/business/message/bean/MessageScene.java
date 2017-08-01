@@ -66,9 +66,12 @@ public class MessageScene implements Serializable {
 	
 	private String validateMethodStr;
 	
+	@SuppressWarnings("unused")
 	private Integer testDataNum = getTestDataNum();
 	
+	@SuppressWarnings("unused")
 	private String messageName;
+	@SuppressWarnings("unused")
 	private String interfaceName;
 	
 	/**

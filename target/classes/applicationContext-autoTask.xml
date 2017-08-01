@@ -10,5 +10,10 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd">  
-    
+	<bean id="jobFactory" class="com.dcits.coretest.task.AutoJobFactory"></bean>  
+    <bean id="Scheduler"  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
+        <property name="jobFactory" ref="jobFactory" />   
+    </bean>     
+    <bean id="jobManager" class="com.dcits.coretest.task.JobManager"> </bean>   
+    <bean id="jobListener" class="com.dcits.coretest.task.TaskJobListener"> </bean>  
 </beans>

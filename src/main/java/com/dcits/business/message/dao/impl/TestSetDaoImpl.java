@@ -19,13 +19,14 @@ import com.dcits.business.message.dao.TestSetDao;
 @Repository("testSetDao")
 public class TestSetDaoImpl extends BaseDaoImpl<TestSet> implements TestSetDao {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<MessageScene> getEnableAddScenes(Integer setId) {
 		// TODO Auto-generated method stub
 		/*String hql = "From MessageScene m where m.message.status='0' and m.message.interfaceInfo.status='0'";
 		List<MessageScene> allScenes = getSession().createQuery(hql).setCacheable(true).list();*/
 		//String sql = "select * from at_message_scene where message_scene_id not in (select message_scene_id from at_set_scene where set_id=:setId)";
-		String hql = "from MessageScene m1 where not exists (select 1 from MessageScene m2 join m2.testSets s where s.setId=:setId and m1.messageSceneId=m2.messageSceneId)";					
+		String hql = "from MessageScene m1 where not exists (select 1 from MessageScene m2 join m2.testSets s where s.setId=:setId and m1.messageSceneId=m2.messageSceneId) and m1.message is not null";					
 		return getSession().createQuery(hql).setInteger("setId", setId).setCacheable(true).list();
 	}
 
@@ -43,6 +44,7 @@ public class TestSetDaoImpl extends BaseDaoImpl<TestSet> implements TestSetDao {
 		getSession().createSQLQuery(sql).setInteger("setId" ,setId).setInteger("messageSceneId", messageSceneId).executeUpdate();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<TestSet> getUserSets(Integer userId) {
 		// TODO Auto-generated method stub

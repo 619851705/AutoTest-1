@@ -134,7 +134,7 @@ public class PageModel<T> {
 		if (this.getRecordCount() <= 0) {
 			return 0;
 		} else {
-			pageCount=(recordCount+pageSize-1) / pageSize;
+			pageCount=(recordCount + pageSize-1) / pageSize;
 		}
 		return pageCount;
 	}

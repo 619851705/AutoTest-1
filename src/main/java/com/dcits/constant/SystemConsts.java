@@ -89,5 +89,13 @@ public class SystemConsts {
 	
 	public static final String APPLICATION_ATTRIBUTE_OPERATION_INTERFACE = "ops";
 	
+	public static final String QUARTZ_TASK_NAME_PREFIX_KEY = "scheduleJob";
+	
+	public static final String QUARTZ_SCHEDULER_START_FLAG = "quartzStatus";
+	
+	public static final String QUARTZ_SCHEDULER_IS_START = "true";
+	
+	public static final String QUARTZ_SCHEDULER_IS_STOP = "false";
+	
 
 }

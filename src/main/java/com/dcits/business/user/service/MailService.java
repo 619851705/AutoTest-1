@@ -42,4 +42,11 @@ public interface MailService extends BaseService<Mail> {
 	 * @param status 需要改变的状态
 	 */
 	void changeStatus(Integer mailId,String statusName,String status);
+	
+	/**
+	 * 发送系统邮件
+	 * @param messageInfo
+	 * @param receiveUserId
+	 */
+	void sendSystemMail (String messageInfo, Integer receiveUserId);
 }

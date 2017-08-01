@@ -29,6 +29,7 @@ import com.dcits.util.StrutsUtils;
 public class MessageValidateResponse {
 	
 	
+	@SuppressWarnings("unused")
 	private static final Logger LOGGER = Logger.getLogger(MessageValidateResponse.class.getName());
 	
 	private static ObjectMapper mapper = new ObjectMapper();
@@ -42,7 +43,8 @@ public class MessageValidateResponse {
 	 * status 验证结果 0-成功 1-不成功<br>
 	 * msg 备注信息 
 	 */
-	public static Map<String,String> validate(String responseMessage, String requestMessage, MessageScene scene) {
+	public static Map<String,String> validate(String responseMessage, String requestMessage, MessageScene scene, String messageType) {
+		
 		String validateType = scene.getValidateRuleFlag();
 		Set<SceneValidateRule> rules = scene.getRules();
 		
@@ -55,7 +57,7 @@ public class MessageValidateResponse {
 			return map;
 		}
 		
-		MessageParse parseUtil = MessageParse.getParseInstance(scene.getMessage().getMessageType());
+		MessageParse parseUtil = MessageParse.getParseInstance(messageType);
 		
 		//关键字匹配验证,通过左右边界
 		if ("0".equals(validateType)) {
@@ -81,6 +83,7 @@ public class MessageValidateResponse {
 	 * @param rule
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	private static Map<String, String> relateKeyValidate(String responseMessage, String requestMessage, SceneValidateRule rule, MessageParse parseUtil) {
 		Map<String,String> map = new HashMap<String, String>();
 		Map maps = null;
@@ -90,11 +93,18 @@ public class MessageValidateResponse {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		if (maps == null) {
+			map.put("status", "1");
+			map.put("msg", "关联验证配置出错，请检查或者重新设置!");
+			return map;
+		}
+		
 		String leftBoundary = (String) maps.get("LB");
 		String rightBoundary = (String) maps.get("RB");
 		int order = Integer.parseInt((String) maps.get("ORDER"));
 		
-		String regex = leftBoundary + "(.*)" + rightBoundary;
+		String regex = leftBoundary + "(.*?)" + rightBoundary;
 		Pattern pattern = Pattern.compile(regex);
 		List<String> regStrs = new ArrayList<String>();
 		Matcher matcher = pattern.matcher(parseUtil.parseMessageToSingleRow(responseMessage));
@@ -152,6 +162,7 @@ public class MessageValidateResponse {
 	 * @param parseUtil
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private static Map<String, String> nodeParameterValidate(String responseMessage, String requestMessage, List<SceneValidateRule> rules, MessageParse parseUtil) {
 		Map<String,String> map = new HashMap<String, String>();
 		map.put("status", "1");
@@ -169,7 +180,7 @@ public class MessageValidateResponse {
 				continue;
 			}
 			
-			msg += "在验证出参节点路径为" + rule.getParameterName() + "时:";
+			msg += "在验证出参节点路径为" + rule.getParameterName() + "时: ";
 			
 			String vaildateStr = parseUtil.getObjectByPath(responseMessage, rule.getParameterName());
 			
@@ -190,7 +201,7 @@ public class MessageValidateResponse {
 				validateValue = parseUtil.getObjectByPath(requestMessage, rule.getValidateValue());
 				
 				if (validateValue == null) {
-					map.put("msg", msg + "在入参报文中没有找到路径为" + rule.getValidateValue() + "节点,请检查验证规则!");
+					map.put("msg", msg + "在入参报文中没有找到路径为" + rule.getValidateValue() + "的节点,请检查验证规则!");
 					return map;
 				}
 			} 

@@ -52,9 +52,10 @@ public interface BaseDao<T> {
 	
 	/**
 	 * 统计总实体实例的数量
+	 * @param filterCondition 自定义过滤条件
 	 * @return 总数量
 	 */
-	 int totalCount();
+	 int totalCount(String ...filterCondition);
 	
 	 /**
 	  * 获取分页列表

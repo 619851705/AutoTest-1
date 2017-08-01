@@ -25,6 +25,7 @@ public class SceneValidateRuleDaoImpl extends BaseDaoImpl<SceneValidateRule> imp
 		getSession().createQuery(hql).setString("validateValue", validateValue).setInteger("validateId", validateId).setString("parameterName", parameterName).executeUpdate();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<SceneValidateRule> getParameterValidate(Integer messageSceneId) {
 		// TODO Auto-generated method stub

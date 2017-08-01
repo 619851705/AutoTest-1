@@ -10,22 +10,22 @@
             <column name="id" />
             <generator class="native"></generator>
         </id>
-        <many-to-one name="selfParameter" class="com.dcits.business.message.bean.Parameter" lazy="proxy" cascade="all">
+        <many-to-one name="selfParameter" class="com.dcits.business.message.bean.Parameter" lazy="false" cascade="save-update">
             <column name="self_parameter_id" />
         </many-to-one>             
         
-        <set name="childComplexParameters" cascade="all-delete-orphan" lazy="true" inverse="true">
+        <set name="childComplexParameters" cascade="all-delete-orphan" lazy="false" inverse="true">
             <key>
                 <column name="next_complex_parameter_id" />
             </key>
             <one-to-many class="com.dcits.business.message.bean.ComplexParameter" />
         </set>
         
-        <many-to-one name="parentComplexParameter" class="com.dcits.business.message.bean.ComplexParameter" lazy="proxy">
+        <many-to-one name="parentComplexParameter" class="com.dcits.business.message.bean.ComplexParameter" lazy="false">
             <column name="next_complex_parameter_id" />
         </many-to-one>  
         
-       <one-to-one name="message" property-ref="complexParameter" cascade="all-delete-orphan"></one-to-one>
+       <one-to-one name="message" property-ref="complexParameter"></one-to-one>
         
     </class>
 </hibernate-mapping>

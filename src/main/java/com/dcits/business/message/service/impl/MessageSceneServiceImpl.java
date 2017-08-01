@@ -1,9 +1,13 @@
 package com.dcits.business.message.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dcits.business.base.service.impl.BaseServiceImpl;
+import com.dcits.business.message.bean.InterfaceInfo;
+import com.dcits.business.message.bean.Message;
 import com.dcits.business.message.bean.MessageScene;
 import com.dcits.business.message.dao.MessageSceneDao;
 import com.dcits.business.message.service.MessageSceneService;
@@ -28,6 +32,24 @@ public class MessageSceneServiceImpl extends BaseServiceImpl<MessageScene> imple
 	public void updateValidateFlag(Integer messageSceneId, String validateRuleFlag) {
 		// TODO Auto-generated method stub
 		messageSceneDao.updateValidateFlag(messageSceneId, validateRuleFlag);
+	}
+
+	@Override
+	public List<MessageScene> getBySetId(Integer setId) {
+		// TODO Auto-generated method stub
+		return messageSceneDao.getBySetId(setId);
+	}
+
+	@Override
+	public InterfaceInfo getInterfaceOfScene(Integer messageSceneId) {
+		// TODO Auto-generated method stub
+		return messageSceneDao.getInterfaceOfScene(messageSceneId);
+	}
+
+	@Override
+	public Message getMessageOfScene(Integer messageSceneId) {
+		// TODO Auto-generated method stub
+		return messageSceneDao.getMessageOfScene(messageSceneId);
 	}
 
 }

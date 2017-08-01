@@ -42,12 +42,12 @@
             <column name="parameter_json"/>
         </property>
         
-        <set name="scenes" cascade="all" lazy="true">
+        <set name="scenes" cascade="all" lazy="true" inverse="true">
         	<key column="message_id"></key>
         	<one-to-many class="com.dcits.business.message.bean.MessageScene"/>
         </set>
           
-         <many-to-one name="complexParameter" unique="true" cascade="all">
+         <many-to-one name="complexParameter" unique="true" lazy="false" cascade="all-delete-orphan">
         	<column name="complex_parameter_id"></column>
         </many-to-one>
         

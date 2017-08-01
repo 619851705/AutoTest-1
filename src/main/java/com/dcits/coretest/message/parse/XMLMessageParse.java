@@ -37,6 +37,7 @@ public class XMLMessageParse extends MessageParse {
 		// TODO Auto-generated constructor stub
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public ComplexParameter parseMessageToObject(String message, List<Parameter> params) {
 		// TODO Auto-generated method stub
@@ -66,6 +67,7 @@ public class XMLMessageParse extends MessageParse {
 		return messageFormatBeautify(parseXmlMessage(complexParameter, new StringBuilder(""), parseParamsDataToMap(paramsData)).toString());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public String checkParameterValidity(List<Parameter> params, String message) {
 		// TODO Auto-generated method stub

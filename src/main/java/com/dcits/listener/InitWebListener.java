@@ -19,6 +19,7 @@ import com.dcits.business.system.service.GlobalSettingService;
 import com.dcits.business.user.bean.OperationInterface;
 import com.dcits.business.user.service.OperationInterfaceService;
 import com.dcits.constant.SystemConsts;
+import com.dcits.coretest.task.JobManager;
 
 
 /**
@@ -46,11 +47,12 @@ public class InitWebListener implements ServletContextListener {
 		ServletContext context = arg0.getServletContext();
 		//取得appliction上下文
 		ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(context);
+		
 		//取得指定bean
 		OperationInterfaceService opService =(OperationInterfaceService)ctx.getBean("operationInterfaceService");
 		GlobalSettingService settingService = (GlobalSettingService) ctx.getBean("globalSettingService");
 		DataDBService dbService = (DataDBService) ctx.getBean("dataDBService");
-		
+		JobManager jobManager = (JobManager) ctx.getBean("jobManager");
 		
 		//获取当前系统的所有接口信息  
 		LOGGER.info("获取当前系统的所有接口信息!");
@@ -81,6 +83,10 @@ public class InitWebListener implements ServletContextListener {
 		}
 		
 		context.setAttribute(SystemConsts.APPLICATION_ATTRIBUTE_QUERY_DB, dbs);
+		
+		//启动quartz定时任务
+		jobManager.startTasks();
+		context.setAttribute(SystemConsts.QUARTZ_SCHEDULER_START_FLAG, SystemConsts.QUARTZ_SCHEDULER_IS_START);
 		
 		LOGGER.info("Web容器初始化完成!");
 	}

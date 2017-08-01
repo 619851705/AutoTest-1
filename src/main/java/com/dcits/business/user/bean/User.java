@@ -78,6 +78,9 @@ public class User implements Serializable {
     public User() {
     }
 
+    public User (Integer userId) {
+    	this.userId = userId;
+    }
 	/** minimal constructor */
     public User(String username, String password) {
         this.username = username;

@@ -54,6 +54,7 @@ public class TestReportAction extends BaseAction<TestReport> {
 		return SUCCESS;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object processListData(Object o) {
 		// TODO Auto-generated method stub

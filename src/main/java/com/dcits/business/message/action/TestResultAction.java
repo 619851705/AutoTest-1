@@ -24,6 +24,7 @@ public class TestResultAction extends BaseAction<TestResult> {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	@SuppressWarnings("unused")
 	private TestResultService testResultService;
 	
 	private Integer reportId;
@@ -42,8 +43,7 @@ public class TestResultAction extends BaseAction<TestResult> {
 				this.filterCondition = new String[]{"testReport.reportId=" + reportId};
 			} else {
 				this.filterCondition = new String[]{"testReport.reportId=" + reportId, "runStatus='" + model.getRunStatus() + "'"};
-			}
-			
+			}			
 		}
 		return this.filterCondition;
 	}

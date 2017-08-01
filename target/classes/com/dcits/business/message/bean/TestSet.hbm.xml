@@ -28,7 +28,7 @@
 			<column name="status"></column>
 		</property>
         
-        <set name="ms" table="at_set_scene" lazy="true" cascade="save-update">
+        <set name="ms" table="at_set_scene" lazy="true" cascade="all" inverse="true">
         	<key column="set_id"></key>
         	<many-to-many class="com.dcits.business.message.bean.MessageScene" column="message_scene_id"></many-to-many>
         </set>

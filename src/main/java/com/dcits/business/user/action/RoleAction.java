@@ -50,6 +50,7 @@ public class RoleAction extends BaseAction<Role> {
 	/**
 	 * 绑定每个角色的拥有权限个数
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object processListData(Object o) {
 		List<Role> roles = (List<Role>) o;

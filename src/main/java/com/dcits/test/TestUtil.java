@@ -13,9 +13,6 @@ import com.dcits.business.message.bean.Parameter;
 import com.dcits.business.message.bean.TestConfig;
 import com.dcits.coretest.message.parse.MessageParse;
 import com.dcits.coretest.message.protocol.HTTPTestClient;
-import com.dcits.coretest.message.protocol.SocketTestClient;
-import com.dcits.coretest.message.protocol.TestClient;
-import com.dcits.util.PracticalUtils;
 import com.dcits.util.message.JsonUtil.TypeEnum;
 import com.dcits.util.message.XmlUtil;
 
@@ -27,6 +24,7 @@ import com.dcits.util.message.XmlUtil;
 
 public class TestUtil {
 	
+	@SuppressWarnings("unused")
 	@Test
 	public void testJsonUtil() throws Exception{
 		
@@ -104,6 +102,7 @@ public class TestUtil {
 		System.out.println(MessageParse.getParseInstance("url").depacketizeMessageToString(complexParam10, null));
 	}
 	
+	@SuppressWarnings("unused")
 	@Test
 	public void someTest() throws Exception {
 		String xmlStr = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><ROOT>		<data>			<username>aa</username>		</data>		<data>			<username>aa</username>		</data>	 <ReturnCodeXXX type=\"int\">12345</ReturnCodeXXX></ROOT>";
@@ -176,10 +175,5 @@ public class TestUtil {
 	
 	@Test
 	public void test4() {
-		/*TestClient client = TestClient.getTestClientInstance("Socket");
-		System.out.println(client);
-		Map<String, String> map = client.sendRequest("127.0.0.1:7895", "hello", "{}", new TestConfig(1, "0", 10000, 10000, "10000", "10000", "10000", "10000"));
-		System.out.println(map.toString());*/
-		System.out.println(PracticalUtils.isNumeric(""));
 	}	
 }	

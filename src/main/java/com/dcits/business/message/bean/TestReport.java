@@ -65,6 +65,8 @@ public class TestReport implements Serializable{
 	 */
 	private User user;
 	
+	private String mark;
+	
 	/**
 	 * 前台展示字段,测试人姓名
 	 */
@@ -196,6 +198,14 @@ public class TestReport implements Serializable{
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getMark() {
+		return mark;
+	}
+
+	public void setMark(String mark) {
+		this.mark = mark;
 	}
 	
 	

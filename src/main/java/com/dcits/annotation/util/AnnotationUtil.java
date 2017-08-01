@@ -7,6 +7,7 @@ import com.dcits.annotation.FieldNameMapper;
 
 public class AnnotationUtil {
 	
+	@SuppressWarnings("rawtypes")
 	public static String getRealColumnName(Class clazz, String fieldName, int getType) {
 		
 		Field field = null;
@@ -42,6 +43,7 @@ public class AnnotationUtil {
 		return fieldName;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private static boolean isHaveField(Class clazz, String fieldName) {
 		for (Field f:clazz.getDeclaredFields()) {
 			if (f.getName().equals(fieldName)) {

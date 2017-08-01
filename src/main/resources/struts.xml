@@ -232,6 +232,18 @@
 			</result>
 		</action>
 		
+		<!-- 定时 任务 -->
+		<action name="task-*" class="autoTaskAction" method="{1}">
+			<interceptor-ref name="callMethodInterceptor"></interceptor-ref>
+			<interceptor-ref name="myPrepareInterceptorsStack"></interceptor-ref>
+			<result type="json">
+				<param name="root">jsonMap</param>
+			</result>
+			<result type="json" name="check">
+				<param name="root">checkNameFlag</param>
+			</result>
+		</action>
+		
 	</package>
 
 </struts>
