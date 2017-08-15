@@ -7,7 +7,7 @@ var SET_LIST_SCENE_URL = "set-listScenes";//展示存在测试集或者不存在
 var SET_OP_SCENE_URL = "set-opScene";//操作测试场景，添加到测试集或者从测试集删除
 
 var setId;
-var mode = 0;
+var mode = 0; //0-管理  1-添加
 
 var templateParams = {
 		tableTheads:["接口", "报文", "场景", "操作"],
@@ -22,6 +22,11 @@ var templateParams = {
 			id:"add-scene",
 			iconFont:"&#xe600;",
 			name:"添加场景"
+		},{
+			size:"M",
+			id:"batch-op",
+			iMarkClass:"Hui-iconfont-del3",
+			name:"批量操作"
 		}]		
 };
 
@@ -66,12 +71,21 @@ var columnsSetting = [
 
 
 var eventList = {
+		"#batch-op":function() {
+			var checkboxList = $(".selectScene:checked");
+			var opName = "删除";
+			if (mode == 1) {
+				opName = "添加";
+			}
+			batchDelObjs(checkboxList, SET_OP_SCENE_URL + "?mode=" + mode + "&setId=" + setId, table, opName)
+		},
 		"#manger-scene":function() {
 			var that = this;
 			mode = 0;			
 			refreshTable(SET_LIST_SCENE_URL + "?mode=" + mode + "&setId=" + setId, function(json) {
 				$(that).addClass('btn-primary').siblings().removeClass('btn-primary');
 			});
+			$("#batch-op").children("i").removeClass("Hui-iconfont-add").addClass("Hui-iconfont-del3");
 		},
 		"#add-scene":function() {
 			var that = this;
@@ -79,6 +93,7 @@ var eventList = {
 			refreshTable(SET_LIST_SCENE_URL + "?mode=" + mode + "&setId=" + setId, function(json) {
 				$(that).addClass('btn-primary').siblings().removeClass('btn-primary');
 			});
+			$("#batch-op").children("i").removeClass("Hui-iconfont-del3").addClass("Hui-iconfont-add");
 		},
 		".op-scene":function() {
 			var tip = '删除';

@@ -15,12 +15,15 @@ var PARAM_SAVE_URL = "param-save";   //保存新增的接口参数
 var PARAM_DEL_URL = "param-del";   //删除指定参数
 var PARAM_EDIT_URL = "param-edit";  //编辑参数的指定属性
 var PARAM_JSON_IMPORT_URL = "param-batchImportParams"; //导入json串
+var PARAM_DEL_ALL_URL = "param-delInterfaceParams";
 
 var INTERFACE_LIST_URL = "interface-list"; //获取接口列表
 var INTERFACE_CHECK_NAME_URL = "interface-checkName"; //检查新增接口名是否重复
 var INTERFACE_EDIT_URL = "interface-edit";  //接口编辑
 var INTERFACE_GET_URL = "interface-get"; //获取指定接口信息
 var INTERFACE_DEL_URL = "interface-del"; //删除指定接口
+
+
 
 var templateParams = {
 		tableTheads:["名称","中文名","类型","协议","创建时间","状态","创建用户","最后修改","参数","操作"],
@@ -246,7 +249,7 @@ var eventList = {
 		".edit-params":function(){
 			var data = table.row( $(this).parents('tr') ).data();
 			interfaceId = data.interfaceId;
-			layer_show(data.interfaceName+"-接口参数管理",parametersEditHmtl, "1000", "500",1,function(){
+			layer_show(data.interfaceName + "-接口参数管理", parametersEditHmtl, "1000", "500", 1, function(){
 				initParameters();
 			});	
 		},
@@ -274,10 +277,27 @@ var eventList = {
 				  '<td><input type="text"/>'+'</td>'+
 				  '<td><input type="text"/>'+'</td>'+
 				  '<td><input type="text"/>'+'</td>'+
-				  '<td>'+selectS+'</td>'+
+				  '<td>' + selectS + '</td>'+
 				  '<td><input type="text" value="TopRoot."/>'+'</td>'+
-				  '<td>'+btnS+'</td></tr>';
+				  '<td>' + btnS + '</td></tr>';
 			$("#parameters-tbody").prepend(html);			
+		},
+		"#del-all-parameter":function() {
+			layer.confirm('确认要删除该接口的全部入参信息？该操作可能导致接口下的报文和场景在测试时出现异常，请同时更新关联的报文场景！', 
+					{title:'警告', icon:0}, function(index) {
+						layer.close(index);
+						$("#parameters-table").spinModal();
+						$.post(PARAM_DEL_ALL_URL, {interfaceId:interfaceId}, function(json) {
+							$("#parameters-table").spinModal(false);
+							if (json.returnCode == 0) {
+								initParameters();
+								layer.msg('删除成功!', {icon:6, time:1500});
+							} else {
+								layer.alert(json.msg, {icon:5});
+							}								
+						});
+						
+					});
 		},
 		".param-edit-value":function(){
 			editParameter($(this));
@@ -299,7 +319,7 @@ var eventList = {
 		".parameter-del":function(){
 			var that = $(this);
 			var id = $(that.parent('td').siblings('td')[0]).attr("id");
-			layer.confirm('确认要删除吗？',function(index){		
+			layer.confirm('确认要删除此参数吗？此操作将会导致该接口下的报文发生变化,请在删除之后同时更新报文!', {icon:0, title:'警告'}, function(index){		
 				layer.close(index);	
 		    	$.post(PARAM_DEL_URL,{"id":id},function(data){
 		    		if(data.returnCode==0){		    			
@@ -381,10 +401,10 @@ $(function(){
 /**初始化接口参数数据*/
 function initParameters(){
 	$("#parameters-table").spinModal();
-	$.get(PARAMS_GET_URL+"?interfaceId="+interfaceId,function(data){
+	$.get(PARAMS_GET_URL + "?interfaceId=" + interfaceId, function(data) {
 		if(data.returnCode == 0){
 			var html = '';
-			$.each(data.data,function(i,n){
+			$.each(data.data,function(i,n) {
 				var btnS = '<a href="javascript:;" class="btn btn-danger size-S radius parameter-del">删除</a>';							
 				html += '<tr class="text-c">'+
 						'<td class="param-id" id="'+n.parameterId+'">'+n.parameterId+'</td>'+
@@ -399,10 +419,12 @@ function initParameters(){
 			$("#editTag").text("单击已修改参数属性");
 			$("#no-parameter-tip").text('');
 			$("#parameters-table").spinModal(false);
-		}else if(data.returnCode==3){
+		}else if(data.returnCode == 3){
+			$("#parameters-tbody").html('');
 			$("#no-parameter-tip").text("没有参数,你可以手动增加或者通过JSON报文导入");
 			$("#parameters-table").spinModal(false);
-		}else{
+		} else {
+			$("#parameters-table").spinModal(false);
 			layer.alert(data.msg, {icon: 5});
 		}
 	});	
@@ -518,25 +540,24 @@ function saveParameter(obj){
 		defaultValue: defaultValue,
 		type: type,
 		"interfaceInfo.interfaceId": interfaceId
-		},function(data){
-			if(data.returnCode==0){
+		}, function(data) {
+			if(data.returnCode == 0){
 				var btnS='<a href="javascript:;" class="btn btn-danger size-S radius parameter-del">删除</a>';
 				
 				var  html = '<tr class="text-c">'+
-					  '<td class="param-id" id="'+data.id+'">'+data.id+'</td>' +
-					  '<td class="param-edit-value" name="parameterIdentify">'+parameterIdentify+'</td>'+
-					  '<td class="param-edit-value" name="parameterName">'+parameterName+'</td>'+
-					  '<td class="param-edit-value" name="defaultValue">'+defaultValue+'</td>'+
-					  '<td class="param-edit-value" name="type">'+type+'</td>'+
-					  '<td class="param-edit-value" name="path">'+path+'</td>'+
-					  '<td class="param-btns">'+btnS+'</td></tr>';
+					  '<td class="param-id" id="' + data.id + '">' + data.id + '</td>' +
+					  '<td class="param-edit-value" name="parameterIdentify">' + parameterIdentify + '</td>'+
+					  '<td class="param-edit-value" name="parameterName">' + parameterName + '</td>' +
+					  '<td class="param-edit-value" name="defaultValue">' + defaultValue + '</td>'+
+					  '<td class="param-edit-value" name="type">' + type + '</td>' +
+					  '<td class="param-edit-value" name="path">' + path + '</td>' +
+					  '<td class="param-btns">' + btnS + '</td></tr>';
 				$(obj).parents("tr").remove();
-				console.log(html);
 				$("#parameters-tbody").prepend(html);
 				layer.msg('增加成功',{icon:1,time:1500});	
 				$("#editTag").text("单击已修改参数属性");
 				$("#no-parameter-tip").text("");
-			}else{
+			} else {
 				layer.alert(data.msg, {icon: 5});
 			}
 	});
@@ -550,7 +571,7 @@ function batchImportParams(i){
 		return false;
 	}
 	var messageType = $("#messageType").val();
-	$.post(PARAM_JSON_IMPORT_URL,{interfaceId:interfaceId,paramsJson:paramsJson,messageType:messageType},function(data){
+	$.post(PARAM_JSON_IMPORT_URL, {interfaceId:interfaceId, paramsJson:paramsJson, messageType:messageType}, function(data){
 		if(data.returnCode==0){
 			initParameters();
 			layer.close(currIndex);

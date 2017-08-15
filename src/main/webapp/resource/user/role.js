@@ -41,7 +41,7 @@ var templateParams = {
 				         },
 				         {
 				        	 value:"CRM测试组",
-				        	 text:"性能测试组", 
+				        	 text:"CRM测试组", 
 				         },
 				         {
 				        	 value:"BOSS测试组",

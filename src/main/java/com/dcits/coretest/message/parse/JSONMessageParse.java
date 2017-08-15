@@ -170,6 +170,11 @@ public class JSONMessageParse extends MessageParse{
 			message.append("{");
 			
 			for (int i = 0; i < childParams.size(); i++) {
+				
+				if (childParams.get(i).getSelfParameter() == null) {
+					continue;
+				}
+				
 				paraseJsonMessage(childParams.get(i), message, messageData);
 				
 				if (i < childParams.size() - 1) {
@@ -185,6 +190,10 @@ public class JSONMessageParse extends MessageParse{
 			message.append("[");
 			
 			for (int i = 0; i < childParams.size(); i++) {
+				if (childParams.get(i).getSelfParameter() == null) {
+					continue;
+				}
+				
 				paraseJsonMessage(childParams.get(i), message, messageData);
 				
 				if (i < childParams.size() - 1) {
@@ -229,7 +238,7 @@ public class JSONMessageParse extends MessageParse{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Set<Parameter> importMessageToParameter(String message) {
+	public Set<Parameter> importMessageToParameter(String message, Set<Parameter> existParams) {
 		// TODO Auto-generated method stub
 		Object[] jsonTree = null;
 		try {
@@ -250,7 +259,7 @@ public class JSONMessageParse extends MessageParse{
 			Parameter param = null;
 			for (int i = 0;i < paramList.size();i++) {
 				param = new Parameter(paramList.get(i), "", valueMap.get(paramList.get(i)), pathList.get(i), typeList.get(i));
-				if (validateRepeatabilityParameter(params, param)) {
+				if (validateRepeatabilityParameter(params, param) && validateRepeatabilityParameter(existParams, param)) {
 					params.add(param);
 				}								
 			}		

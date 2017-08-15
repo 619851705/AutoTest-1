@@ -424,17 +424,23 @@ function delObj(tip, url, id, obj) {
 }
 
 /**
- * 批量删除方法-表格为DT时
+ * 批量方法-表格为DT时
  * @param checkboxList  checkBox被选中的列表
  * @param url   删除url
  * @param tableObj   TD对象，默认名为table
+ * @param opName 操作方式名称 默认为 删除
  * @returns {Boolean}
  */
-function batchDelObjs(checkboxList, url, tableObj) {
+function batchDelObjs(checkboxList, url, tableObj, opName) {
 	if (checkboxList.length<1) {
 		return false;
 	}
-	layer.confirm('确认删除选中的' + checkboxList.length + '条记录?', {icon:0, title:'警告'}, function(index) {
+	
+	if (opName == null) {
+		opName = "删除";
+	}
+	
+	layer.confirm('确认' + opName + '选中的' + checkboxList.length + '条记录?', {icon:0, title:'警告'}, function(index) {
 		layer.close(index);
 		$wrapper.spinModal();
 		var delCount = 0;
@@ -442,7 +448,7 @@ function batchDelObjs(checkboxList, url, tableObj) {
 			$.each(checkboxList,function(i, n) {
 				var objId = $(n).val();//获取id
 				var objName = $(n).attr("name");	//name属性为对象的名称	
-				layer.msg("正在删除" + objName + "...", {time: 999999});    
+				layer.msg("正在" + opName + objName + "...", {time: 999999});    
 					$.ajax({
 						type:"POST",
 						url:url,
@@ -450,11 +456,11 @@ function batchDelObjs(checkboxList, url, tableObj) {
 						async:false,
 						success:function(data) {
 							if(data.returnCode != 0) {	
-								layer.msg("删除" + objName + "失败!", {time:999999});
+								layer.msg(opName + objName + "失败!", {time:999999});
 								errorTip += "[" + objName + "]";
 							}else{
 								delCount = i+1;
-								layer.msg("删除" + objName + "成功!", {time:999999});
+								layer.msg(opName + objName + "成功!", {time:999999});
 							}
 						}
 						});			
@@ -463,13 +469,13 @@ function batchDelObjs(checkboxList, url, tableObj) {
 			refreshTable();
 			$wrapper.spinModal(false);
 			if (errorTip != "") {
-				errorTip = "在删除" + errorTip + "数据时发生了错误,请查看错误日志!";
+				errorTip = "在" + opName + errorTip + "数据时发生了错误,请查看错误日志!";
 				layer.alert(errorTip, {icon:5}, function(index) {
 					layer.close(index);
-					layer.msg("共删除" + delCount + "条数据!", {icon:1, time:2000});
+					layer.msg("共" + opName + delCount + "条数据!", {icon:1, time:2000});
 				});
 			} else {
-				layer.msg("共删除" + delCount + "条数据!", {icon:1, time:2000});
+				layer.msg("共" + opName + delCount + "条数据!", {icon:1, time:2000});
 			}
 
 	});
@@ -747,9 +753,10 @@ function ellipsisData(dataName) {
  * @param type 类型 1-页面层 2-frame层
  * @param success 成功打开之后的回调函数
  * @param cancel 右上角关闭层的回调函数
+ * @param end 层销毁之后的回调
  * @returns index
  */
-function layer_show (title, url, w, h, type, success, cancel) {
+function layer_show (title, url, w, h, type, success, cancel, end) {
 	if (title == null || title == '') {
 		title = false;
 	};

@@ -37,7 +37,7 @@ public class MessageKeys {
 	public static final String MESSAGE_PARAMETER_TYPE_ARRAY_IN_ARRAY = "ARRAY_ARRAY";
 	
 	
-	public static final String XML_MESSAGE_HEAD_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+	public static final String XML_MESSAGE_HEAD_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
 	
 	public static final String XML_MESSAGE_DEFAULT_ROOT_NODE = "ROOT";
 	
@@ -96,6 +96,6 @@ public class MessageKeys {
 	public static final String CUSTOM_PARAMETER_BOUNDARY_SYMBOL_LEFT = "#";
 	public static final String CUSTOM_PARAMETER_BOUNDARY_SYMBOL_RIGHT = "#";
 	
-	
+	public static final String CUSTOM_REQUEST_URL_REPLACE_PARAMETER = "\\$\\{interfaceName\\}";
 	
 }

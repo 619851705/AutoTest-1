@@ -57,9 +57,10 @@ public abstract class MessageParse {
 	/**
 	 * 根据传入的不同格式报文，获取各个参数属性
 	 * @param message 导入的报文串
+	 * @param existParams 已存在的参数信息
 	 * @return List&lt;Parameter&gt  解析指定的参数列表
 	 */
-	public abstract Set<Parameter> importMessageToParameter (String message);
+	public abstract Set<Parameter> importMessageToParameter (String message, Set<Parameter> existParams);
 	
 	/**
 	 * 将报文解析成ComplexParameter对象
@@ -96,7 +97,7 @@ public abstract class MessageParse {
 	 */
 	public String parameterReplaceByNodePath(String message, String str) {
 		
-		String regex = "(" + MessageKeys.CUSTOM_PARAMETER_BOUNDARY_SYMBOL_LEFT + "[a-zA-Z0-9_.]*" + MessageKeys.CUSTOM_PARAMETER_BOUNDARY_SYMBOL_RIGHT + ")";
+		String regex = MessageKeys.CUSTOM_PARAMETER_BOUNDARY_SYMBOL_LEFT + "(.*?)" + MessageKeys.CUSTOM_PARAMETER_BOUNDARY_SYMBOL_RIGHT;
 		Pattern pattern = Pattern.compile(regex);
 		List<String> regStrs = new ArrayList<String>();
 		Matcher matcher = pattern.matcher(str);
@@ -105,12 +106,12 @@ public abstract class MessageParse {
 			regStrs.add(matcher.group(1));
 		}
 		
-		for (String s:regStrs) {
-			String regS = s.substring(MessageKeys.CUSTOM_PARAMETER_BOUNDARY_SYMBOL_LEFT.length(), s.length() - MessageKeys.CUSTOM_PARAMETER_BOUNDARY_SYMBOL_RIGHT.length());
-			regS = getObjectByPath(message, regS);
+		for (String regS:regStrs) {
+			String s = MessageKeys.CUSTOM_PARAMETER_BOUNDARY_SYMBOL_LEFT + regS + MessageKeys.CUSTOM_PARAMETER_BOUNDARY_SYMBOL_RIGHT;
+			s = getObjectByPath(message, s);
 			
-			if (regS != null) {
-				str = str.replaceAll(s, regS);
+			if (s != null) {
+				str = str.replaceAll(regS, s);
 			}
 			
 		}

@@ -22,6 +22,13 @@ public interface ParameterService extends BaseService<Parameter> {
 	List<Parameter> findByInterfaceId(int interfaceId);
 	
 	/**
+	 * 删除指定接口下的所有参数信息
+	 * @param interfaceId
+	 */
+	void delByInterfaceId(int interfaceId);
+	
+	
+	/**
 	 * 编辑参数的属性
 	 * @param parameterId
 	 * @param attrName 属性名

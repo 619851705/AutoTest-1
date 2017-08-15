@@ -49,6 +49,11 @@ public class TestSet implements Serializable {
 	private String mark;
 	
 	/**
+	 * 该测试集的测试配置
+	 */
+	private TestConfig config;
+	
+	/**
 	 * 包含场景数量
 	 */
 	@SuppressWarnings("unused")
@@ -57,17 +62,29 @@ public class TestSet implements Serializable {
 	
 	private Set<MessageScene> ms = new HashSet<MessageScene>();
 
-	public TestSet(String setName, User user, Timestamp createTime,
-			String status, String mark) {
+	
+
+	public TestSet(Integer setId, String setName, User user,
+			Timestamp createTime, String status, String mark, TestConfig config) {
 		super();
+		this.setId = setId;
 		this.setName = setName;
 		this.user = user;
 		this.createTime = createTime;
 		this.status = status;
 		this.mark = mark;
+		this.config = config;
 	}
 
 	public TestSet() {
+	}
+	
+	public TestConfig getConfig() {
+		return config;
+	}
+	
+	public void setConfig(TestConfig config) {
+		this.config = config;
 	}
 	
 	public Integer getSceneNum() {

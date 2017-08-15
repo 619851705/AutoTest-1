@@ -65,6 +65,16 @@
                     <div class="col-sm-6"><span>执行失败数:</span>&nbsp;&nbsp;<span id="failNum"></span></div>
                     <div class="col-sm-6"><span>测试成功率:</span>&nbsp;&nbsp;<span id="successRate"></span>%</div>
                 </div>
+                <div class="row">
+                    <div class="col-sm-2 col-sm-offset-10">
+                    	<select class="form-control" id="status-views">
+						  <option value="3" selected>全部</option>
+						  <option value="0">成功</option>
+						  <option value="1">失败</option>
+						  <option value="2">异常</option>
+						</select> 
+                    </div>
+                </div>               
                 <hr/>
                 <table class="table table-hover">
                     <thead>
@@ -73,7 +83,9 @@
                         <th>协议</th>
                         <th>报文名</th>
                         <th>场景名</th>
-                        <th>状态</th>
+                        <th>                       	 
+							状态                     
+                        </th>
                         <th>耗时(ms)</th>
                     </tr>
                     </thead>
@@ -82,7 +94,7 @@
                 </table>
             </div>
             <div class="panel-footer">
-                	神州数码系统集成服务有限公司@2017 Created by 性能测试团队
+                	神州数码系统集成服务有限公司@2015-2017 Created by 性能测试团队
             </div>
         </div>
     </div>

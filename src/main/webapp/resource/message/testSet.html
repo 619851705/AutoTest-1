@@ -43,6 +43,63 @@
 </div>
 <div id="edit-page"  style="display: none;"></div>
 <div id="template-page" style="display: none;"></div>
+
+<script id="setting-config-template" type="text/x-handlebars-template">
+	<div class="page-container">
+	<form class="form form-horizontal" id="form-setting-config">	
+	<input type="hidden" name="configId" id="configId" value="{{configId}}">
+	
+	<div class="row cl">
+		<label class="form-label col-xs-5 col-sm-3">接口地址选择：</label>
+		<div class="formControls col-xs-7 col-sm-9">
+			<span class="select-box radius">
+			  <select class="select" size="1" id="requestUrlFlag" name="requestUrlFlag" value="{{requestUrlFlag}}">
+			    <option value="0">默认选择</option>
+			    <option value="1">优先使用接口设置的mock地址</option>
+			    <option value="2">优先使用接口设置的real地址</option>
+			  </select>
+			</span>
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-5 col-sm-3">连接超时：</label>
+		<div class="formControls col-xs-7 col-sm-9">
+			<input type="text" id="connectTimeOut" class="input-text radius" name="connectTimeOut" value="{{connectTimeOut}}">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-5 col-sm-3">读取超时：</label>
+		<div class="formControls col-xs-7 col-sm-9">
+			<input type="text" class="input-text radius" id="readTimeOut" name="readTimeOut" value="{{readTimeOut}}">
+		</div>
+	</div>				
+	<div class="row cl">
+		<label class="form-label col-xs-5 col-sm-3">测试前检查数据：</label>
+		<div class="formControls col-xs-7 col-sm-9">
+			<span class="select-box radius">
+			  <select class="select" size="1" id="checkDataFlag" name="checkDataFlag" value="{{checkDataFlag}}">
+			    <option value="0">检查</option>
+			    <option value="1">不检查</option>
+			  </select>
+			</span>
+		</div>
+	</div>	
+	<div class="row cl">
+		<label class="form-label col-xs-5 col-sm-3">自定义请求地址：</label>
+		<div class="formControls col-xs-7 col-sm-9">
+			<input type="text" class="input-text radius" id="customRequestUrl" name="customRequestUrl" value="{{customRequestUrl}}" placeholder="e.g: http://ip:port/service/${interfaceName}"><br>
+			<p class="c-red">你可以使用&nbsp;<span class="label label-warning radius"> ${interfaceName} </span>&nbsp;来替代接口名称，该值对测试集下的所有场景有效,且优先级高于接口和报文中配置的请求地址,请注意!<p>
+		</div>
+	</div>				
+	<div class="row cl">
+		<div class="col-xs-7 col-sm-9 col-xs-offset-5 col-sm-offset-3">
+			<button class="btn btn-primary radius" type="button" id="update-option"><i class="Hui-iconfont">&#xe632;</i>保存</button>
+			<button class="btn btn-default radius" type="button" id="reset-option">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+		</div>
+	</div>
+	</form>
+	</div>
+</script>
 <script type="text/javascript" src="../../libs/jquery/1.9.1/jquery.js"></script>
 <script type="text/javascript" src="../../libs/layer/2.1/layer.js"></script>
 <script type="text/javascript" src="../../libs/jquery.validation/1.14.0/jquery.validate.min.js"></script> 

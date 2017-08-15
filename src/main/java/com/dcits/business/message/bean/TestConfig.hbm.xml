@@ -29,8 +29,8 @@
             <column name="http_Method_Flag" length="1"/>
         </property>
         
-        <property name="validateString" type="java.lang.String">
-            <column name="validate_String"  length="255"/>
+        <property name="customRequestUrl" type="java.lang.String">
+            <column name="custom_request_url"  length="65535"/>
         </property>
         <property name="checkDataFlag" type="java.lang.String">
             <column name="check_Data_Flag" length="1"/>

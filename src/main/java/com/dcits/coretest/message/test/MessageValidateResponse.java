@@ -28,8 +28,6 @@ import com.dcits.util.StrutsUtils;
  */
 public class MessageValidateResponse {
 	
-	
-	@SuppressWarnings("unused")
 	private static final Logger LOGGER = Logger.getLogger(MessageValidateResponse.class.getName());
 	
 	private static ObjectMapper mapper = new ObjectMapper();
@@ -91,7 +89,8 @@ public class MessageValidateResponse {
 			maps = mapper.readValue(rule.getParameterName(), Map.class);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("解析关键字关联验证规则出错!", e);
+			//e.printStackTrace();
 		}
 		
 		if (maps == null) {

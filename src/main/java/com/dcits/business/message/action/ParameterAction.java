@@ -85,6 +85,17 @@ public class ParameterAction extends BaseAction<Parameter> {
 	}
 	
 	/**
+	 * 删除指定接口下的入参接口信息
+	 * @return
+	 */
+	public String delInterfaceParams() {
+		parameterService.delByInterfaceId(interfaceId);
+				
+		jsonMap.put("returnCode", ReturnCodeConsts.SUCCESS_CODE);
+		return SUCCESS;
+	}
+	
+	/**
 	 * 根据传入的参数属性名称和属性值来更新指定参数的指定属性
 	 */
 	@Override
@@ -102,6 +113,14 @@ public class ParameterAction extends BaseAction<Parameter> {
 	 * @return
 	 */
 	public String batchImportParams() {
+		InterfaceInfo info = interfaceInfoService.get(interfaceId);	
+		
+		if (info == null) {
+			jsonMap.put("msg", "不存在的接口信息，可能已被删除!");
+			jsonMap.put("returnCode", ReturnCodeConsts.MISS_PARAM_CODE);
+			return SUCCESS;
+		}
+		
 		MessageParse parseUtil = MessageParse.getParseInstance(messageType);
 		
 		if (parseUtil == null) {
@@ -110,22 +129,19 @@ public class ParameterAction extends BaseAction<Parameter> {
 			return SUCCESS;
 		}
 		
-		Set<Parameter> params = parseUtil.importMessageToParameter(paramsJson);
+		Set<Parameter> params = parseUtil.importMessageToParameter(paramsJson, info.getParameters());
 		
-		if (params == null || params.size() == 0) {
+		if (params == null) {
 			jsonMap.put("returnCode", ReturnCodeConsts.INTERFACE_ILLEGAL_TYPE_CODE);
 			jsonMap.put("msg", "不是指定格式的合法报文!");
 			return SUCCESS;
+		}		
+
+		for (Parameter p:params) {
+			p.setInterfaceInfo(info);
+			parameterService.edit(p);
 		}
 		
-		InterfaceInfo info = interfaceInfoService.get(interfaceId);	
-		
-		if (info != null) {
-			for (Parameter p:params) {
-				p.setInterfaceInfo(info);
-				parameterService.edit(p);
-			}
-		}
 		
 		jsonMap.put("returnCode", ReturnCodeConsts.SUCCESS_CODE);
 		return SUCCESS;

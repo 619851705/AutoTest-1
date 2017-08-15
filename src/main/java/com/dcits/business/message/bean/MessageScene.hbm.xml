@@ -42,7 +42,7 @@
             <one-to-many class="com.dcits.business.message.bean.SceneValidateRule" />
         </set>
         
-        <set name="testSets" table="at_set_scene" inverse="true" lazy="true">
+        <set name="testSets" table="at_set_scene" inverse="true" lazy="true" cascade="save-update">
         	<key column="message_scene_id"></key>
         	<many-to-many class="com.dcits.business.message.bean.TestSet" column="set_id"></many-to-many>
         </set>

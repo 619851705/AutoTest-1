@@ -50,15 +50,15 @@ public class TestConfig implements Serializable,Cloneable {
 	private String httpMethodFlag;
 	
 	/**
-	 * 全局验证字符串
-	 * <br>已废弃
+	 * 测试集用配置
+	 * <br>请求地址全局配置
 	 */
-	@Deprecated
-	private String validateString;
+	private String customRequestUrl;
 	
 	/**
-	 * 是否在测试之前检查测试数据
-	 * 0-需要检查
+	 * 是否在测试之前检查测试数据<br>
+	 * 在系统进行定时任务时该配置是无效的<br>
+	 * 0-需要检查<br>
 	 * 1-不需要检查
 	 */
 	private String checkDataFlag;
@@ -72,7 +72,7 @@ public class TestConfig implements Serializable,Cloneable {
 	
 	public TestConfig(Integer userId, String requestUrlFlag,
 			Integer connectTimeOut, Integer readTimeOut, String httpMethodFlag,
-			String validateString, String checkDataFlag,
+			String customRequestUrl, String checkDataFlag,
 			String backgroundExecFlag) {
 		super();
 		this.userId = userId;
@@ -80,7 +80,7 @@ public class TestConfig implements Serializable,Cloneable {
 		this.connectTimeOut = connectTimeOut;
 		this.readTimeOut = readTimeOut;
 		this.httpMethodFlag = httpMethodFlag;
-		this.validateString = validateString;
+		this.customRequestUrl = customRequestUrl;
 		this.checkDataFlag = checkDataFlag;
 		this.backgroundExecFlag = backgroundExecFlag;
 	}
@@ -138,12 +138,14 @@ public class TestConfig implements Serializable,Cloneable {
 		this.httpMethodFlag = httpMethodFlag;
 	}
 
-	public String getValidateString() {
-		return validateString;
+	
+
+	public String getCustomRequestUrl() {
+		return customRequestUrl;
 	}
 
-	public void setValidateString(String validateString) {
-		this.validateString = validateString;
+	public void setCustomRequestUrl(String customRequestUrl) {
+		this.customRequestUrl = customRequestUrl;
 	}
 
 	public String getCheckDataFlag() {
@@ -160,16 +162,6 @@ public class TestConfig implements Serializable,Cloneable {
 
 	public void setBackgroundExecFlag(String backgroundExecFlag) {
 		this.backgroundExecFlag = backgroundExecFlag;
-	}
-
-	@Override
-	public String toString() {
-		return "TestConfig [configId=" + configId + ", userId=" + userId
-				+ ", requestUrlFlag=" + requestUrlFlag + ", connectTimeOut="
-				+ connectTimeOut + ", readTimeOut=" + readTimeOut
-				+ ", httpMethodFlag=" + httpMethodFlag + ", validateString="
-				+ validateString + ", checkDataFlag=" + checkDataFlag
-				+ ", backgroundExecFlag=" + backgroundExecFlag + "]";
 	}
 	
 	@Override

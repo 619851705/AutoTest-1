@@ -210,6 +210,7 @@ alter table at_test_data add constraint at_test_data_pk_message_scene_id foreign
 
 create table at_test_set(
 set_id int auto_increment primary key,
+config_id int,
 set_name varchar(255),
 user_id int,
 create_time datetime,
@@ -217,6 +218,7 @@ status char(1),
 mark varchar(255)
 );
 alter table at_test_set add constraint at_test_set_fk_user_id foreign key(user_id) references at_user(user_id);
+alter table at_test_set add constraint at_test_set_fk_config_id foreign key(config_id) references at_test_config(config_id);
 
 
 create table at_set_scene(
@@ -255,6 +257,13 @@ op_time datetime,
 protocol_type varchar(20),
 mark longtext
 );
+
+
+ALTER TABLE at_test_result
+    ENGINE=InnoDB
+    ROW_FORMAT=COMPRESSED 
+    KEY_BLOCK_SIZE=8;
+
 alter table at_test_result add constraint at_test_result_fk_message_scene_id foreign key(message_scene_id) references at_message_scene(message_scene_id);
 alter table at_test_result add constraint at_test_result_fk_report_id foreign key(report_id) references at_test_report(report_id);
 
@@ -265,12 +274,12 @@ request_Url_Flag char(1),
 connect_Time_Out int,
 read_Time_Out int,
 http_Method_Flag char(5),
-validate_String varchar(255),
+custom_request_url text,
 check_Data_flag char(1),
 background_Exec_flag char(1)
 );
 
-insert into at_test_config values(null,0,'0',10000,5000,'0','0,0000,000000','0','1');
+insert into at_test_config values(null,0,'0',3000,20000,'0','0,0000,000000','0','1');
 
 
 create table at_interface_mock(

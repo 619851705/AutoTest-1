@@ -77,7 +77,7 @@ public class MessageScene implements Serializable {
 	/**
 	 * 可用测试数据
 	 */
-	private Set<TestData> enabledTestDatas = new HashSet<TestData>();
+	private Set<TestData> enabledTestDatas;
      
     // Constructors
 
@@ -238,6 +238,10 @@ public class MessageScene implements Serializable {
 
     @JSON(serialize=false)
 	public Set<TestData> getEnabledTestDatas(Integer count) {
+    	if (enabledTestDatas == null) {
+    		this.setEnabledTestDatas();
+    	}
+    	
 		if (count == null) {
 			return enabledTestDatas;
 		}

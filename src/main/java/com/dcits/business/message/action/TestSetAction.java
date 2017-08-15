@@ -10,8 +10,10 @@ import org.springframework.stereotype.Controller;
 
 import com.dcits.business.base.action.BaseAction;
 import com.dcits.business.message.bean.MessageScene;
+import com.dcits.business.message.bean.TestConfig;
 import com.dcits.business.message.bean.TestSet;
 import com.dcits.business.message.service.MessageSceneService;
+import com.dcits.business.message.service.TestConfigService;
 import com.dcits.business.message.service.TestSetService;
 import com.dcits.business.user.bean.User;
 import com.dcits.constant.ReturnCodeConsts;
@@ -37,10 +39,13 @@ public class TestSetAction extends BaseAction<TestSet> {
 	
 	@Autowired
 	private MessageSceneService messageSceneService;
+	@Autowired
+	private TestConfigService testConfigService;
 	
 	/**
-	 * 添加还是删除场景,0-增加 1-删除<br>
-	 * 查询存在于测试集或者不存在测试集中的测试场景,0-存在于测试集  1-不存在于测试集
+	 * (1)、添加还是删除场景,0-增加 1-删除<br>
+	 * (2)、查询存在于测试集或者不存在测试集中的测试场景,0-存在于测试集  1-不存在于测试集<br>
+	 * (3)、更改测试集的运行时配置,0-更改为自定义  1-更改为默认
 	 */
 	private String mode;
 	
@@ -101,12 +106,12 @@ public class TestSetAction extends BaseAction<TestSet> {
 	public String opScene() {
 		//增加场景到测试集
 		if ("1".equals(mode)) {
-			testSetService.addSceneToSet(model.getSetId(), messageSceneId);
+			testSetService.addSceneToSet(model.getSetId(), messageSceneId == null ? id : messageSceneId);
 		}
 		
 		//从测试集删除场景
 		if ("0".equals(mode)) {
-			testSetService.delSceneToSet(model.getSetId(), messageSceneId);
+			testSetService.delSceneToSet(model.getSetId(), messageSceneId == null ? id : messageSceneId);
 		}
 		
 		
@@ -122,6 +127,35 @@ public class TestSetAction extends BaseAction<TestSet> {
 		User user = (User) StrutsUtils.getSessionMap().get("user");
 		
 		jsonMap.put("data", testSetService.getUserSets(user.getUserId()));
+		jsonMap.put("returnCode", ReturnCodeConsts.SUCCESS_CODE);
+		return SUCCESS;
+	}
+	
+	/**
+	 * 设置运行时配置
+	 * @return
+	 */
+	public String settingConfig() {
+		model = testSetService.get(model.getSetId());
+		TestConfig config = null;
+		
+		if ("0".equals(mode)) {
+			config = (TestConfig) testConfigService.getConfigByUserId(0).clone();
+			config.setConfigId(null);
+			config.setUserId(null);
+			testConfigService.save(config);
+			model.setConfig(config);
+		} else {
+			if (model.getConfig() != null) {
+				Integer configId = model.getConfig().getConfigId();
+				model.setConfig(null);
+				testConfigService.delete(configId);
+			}
+		}
+						
+		testSetService.edit(model);
+		
+		jsonMap.put("config", config);
 		jsonMap.put("returnCode", ReturnCodeConsts.SUCCESS_CODE);
 		return SUCCESS;
 	}

@@ -137,8 +137,15 @@ public class AutoTaskAction extends BaseAction<AutoTask> {
 			return SUCCESS;
 		}
 		
-		jobManager.addTask(model);
-		jsonMap.put("returnCode", ReturnCodeConsts.SUCCESS_CODE);
+		jsonMap.put("returnCode", ReturnCodeConsts.SUCCESS_CODE);		
+		try {
+			jobManager.addTask(model);
+		} catch (Exception e) {
+			// TODO: handle exception
+			LOGGER.error("定时任务规则设置有误!", e);
+			jsonMap.put("msg", "启动定时任务出错，详情：" + e.getMessage());
+			jsonMap.put("returnCode", ReturnCodeConsts.QUARTZ_CRON_EXPRESSION_SETTING_ERROR);	
+		}		
 		return SUCCESS;
 	}
 	

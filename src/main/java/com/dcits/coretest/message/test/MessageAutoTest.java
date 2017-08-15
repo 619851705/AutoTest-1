@@ -15,6 +15,7 @@ import com.dcits.business.message.bean.TestConfig;
 import com.dcits.business.message.bean.TestData;
 import com.dcits.business.message.bean.TestReport;
 import com.dcits.business.message.bean.TestResult;
+import com.dcits.business.message.bean.TestSet;
 import com.dcits.business.message.service.MessageSceneService;
 import com.dcits.business.message.service.TestConfigService;
 import com.dcits.business.message.service.TestDataService;
@@ -122,22 +123,33 @@ public class MessageAutoTest {
 	 * @param setId
 	 * @return
 	 */
-	public int[] batchTest (User user, Integer setId, boolean autoTestFlag) {
-		
-		final TestConfig config = testConfigService.getConfigByUserId(user.getUserId());
+	public int[] batchTest (User user, Integer setId, boolean autoTestFlag) {		
 		
 		List<MessageScene> scenes = null;
+		
+		TestSet set = null;
 		//全量
 		if (setId == 0) {
-			scenes = messageSceneService.findAll();//此处没有判断接口和报文的状态，日后修改
+			scenes = messageSceneService.findAll();
 		//测试集	
 		} else {
 			scenes = messageSceneService.getBySetId(setId);
-		}
+			set = testSetService.get(setId);
+		}				
 		
 		if (scenes.size() == 0) {
 			return null;
 		}
+		
+		
+		TestConfig config1 = testConfigService.getConfigByUserId(user.getUserId());
+		
+		if (set != null && set.getConfig() != null) {
+			config1 = set.getConfig();
+		}
+		
+		
+		final TestConfig config = config1;
 		
 		//测试报告
 		final TestReport report = new TestReport();
@@ -167,24 +179,33 @@ public class MessageAutoTest {
 			//选择测试地址
 			InterfaceInfo info = messageSceneService.getInterfaceOfScene(scene.getMessageSceneId());
 			Message msg = messageSceneService.getMessageOfScene(scene.getMessageSceneId());
-			//按照配置中优先级选择，不满足条件的默认选择real地址
-			String requestUrl = info.getRequestUrlReal();
 			
-			if ("0".equals(config.getRequestUrlFlag()) 
-					&& PracticalUtils.isNormalString(msg.getRequestUrl())) {
-				requestUrl = msg.getRequestUrl();
+			String requestUrl = "";
+			
+			if (!PracticalUtils.isNormalString(config.getCustomRequestUrl())) {
+				//按照配置中优先级选择，不满足条件的默认选择real地址
+				requestUrl = info.getRequestUrlReal();
+				
+				if ("0".equals(config.getRequestUrlFlag()) 
+						&& PracticalUtils.isNormalString(msg.getRequestUrl())) {
+					requestUrl = msg.getRequestUrl();
+				}
+				
+				if ("0".equals(config.getRequestUrlFlag()) 
+						&& !PracticalUtils.isNormalString(msg.getRequestUrl())
+						&& PracticalUtils.isNormalString(info.getRequestUrlMock())) {
+					requestUrl = info.getRequestUrlMock();
+				}
+				
+				if ("1".equals(config.getRequestUrlFlag())
+						&& PracticalUtils.isNormalString(info.getRequestUrlMock())) {
+					requestUrl = info.getRequestUrlMock();
+				}
+			} else {
+				//按照测试配置的自定义请求地址设置
+				requestUrl = replaceParameter(config.getCustomRequestUrl(), info.getInterfaceName());
 			}
 			
-			if ("0".equals(config.getRequestUrlFlag()) 
-					&& !PracticalUtils.isNormalString(msg.getRequestUrl())
-					&& PracticalUtils.isNormalString(info.getRequestUrlMock())) {
-				requestUrl = info.getRequestUrlMock();
-			}
-			
-			if ("1".equals(config.getRequestUrlFlag())
-					&& PracticalUtils.isNormalString(info.getRequestUrlMock())) {
-				requestUrl = info.getRequestUrlMock();
-			}
 			
 			//选择测试数据
 			List<TestData> datas = testDataService.getDatasByScene(scene.getMessageSceneId(), 1);
@@ -239,5 +260,7 @@ public class MessageAutoTest {
 		
 	}
 	
-	
+	private String replaceParameter(String constomReuqestUrl, String interfaceName) {
+		return constomReuqestUrl.replaceAll(MessageKeys.CUSTOM_REQUEST_URL_REPLACE_PARAMETER, interfaceName);
+	}
 }

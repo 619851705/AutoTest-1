@@ -18,7 +18,7 @@
 <!-- 文字图标按钮模板 -->
 <script id="btn-text-template" type="text/x-handlebars-template">
     {{#each this}}
-		<a href="javascript:;" class="btn btn-{{type}} radius size-{{size}} {{markClass}}" id="{{id}}"><i class="Hui-iconfont">{{{iconFont}}}</i> {{name}}</a>
+		<a href="javascript:;" class="btn btn-{{type}} radius size-{{size}} {{markClass}}" id="{{id}}"><i class="Hui-iconfont {{iMarkClass}}">{{{iconFont}}}</i> {{name}}</a>
     {{/each}}
 </script>
 

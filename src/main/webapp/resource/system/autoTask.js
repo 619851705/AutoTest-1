@@ -240,13 +240,13 @@ var eventList = {
 			
 			var data = table.row( $(this).parents('tr') ).data();
 			
-			if (data.taskCronExpression == null || data.taskCronExpression == "") {
+			/*if (data.taskCronExpression == null || data.taskCronExpression == "") {
 				layer.msg('未设置定时任务规则/CRON表达式!', {icon:5, time:1500});
 				return false;
-			}
+			}*/
 			
 			layer.confirm('确认停止/启动该定时任务?', {title:'提示', icon:0}, function(index) {
-				layer.close(index);
+				
 				$.get(data.status == "0" ? TASK_STOP_TASK_URL : TASK_ADD_RUNABLE_TASK_URL, {taskId:data.taskId}, function(json) {
 					if (json.returnCode == 0) {
 						layer.msg('操作成功!', {icon:1, time:1500});
@@ -254,6 +254,7 @@ var eventList = {
 					} else {
 						layer.alert(json.msg, {icon:5});
 					}
+					layer.close(index);
 				});
 			});			
 		},
@@ -267,7 +268,7 @@ var eventList = {
 			    			  value: data.taskCronExpression,
 			    			  title: '请输入CRON表达式',
 			    			}, function(value, index, elem){   			  
-			    				updateRuleExpression(value, data.taskId,index);   			  
+			    				updateRuleExpression(value, data.taskId, index);   			  
 			    			});
 		    		},
 		    		function(index){
@@ -313,6 +314,17 @@ var eventList = {
 			
 		},
 		'#choose-task-set':function() {
+			var type = $("#taskType").val();
+			
+			//判断是否为接口自动化类型
+			if (type == "0") {
+				layer_show("接口自动化-选择测试集", "../message/testSet.html?selectMode=0", "860", "620", 2);
+			}
+			//web自动化
+			if (type == "1") {
+				layer.alert("尚未完成!");
+			}			
+			
 			
 		}		
 };

@@ -42,4 +42,15 @@ public class ParameterServiceImpl extends BaseServiceImpl<Parameter> implements 
 		parameterDao.editProperty(parameterId, attrName, attrValue);
 	}
 
+
+	@Override
+	public void delByInterfaceId(int interfaceId) {
+		// TODO Auto-generated method stub
+		List<Parameter> params = findByInterfaceId(interfaceId);
+		
+		for (Parameter p:params) {
+			delete(p.getParameterId());
+		}
+	}
+
 }

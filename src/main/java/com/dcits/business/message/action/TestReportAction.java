@@ -105,7 +105,7 @@ public class TestReportAction extends BaseAction<TestReport> {
 		desc.put("successNum", report.getSuccessNum());
 		desc.put("failNum", report.getFailNum());
 		desc.put("stopNum", report.getStopNum());
-		desc.put("successRate",  String.format("%.2f", Double.valueOf(String.valueOf((report.getSuccessNum()/report.getSceneNum()*100)))));
+		desc.put("successRate",  String.format("%.2f", Double.valueOf(String.valueOf(((double)report.getSuccessNum() / report.getSceneNum() * 100)))));
 		
 		jsonMap.put("desc", desc);
 		jsonMap.put("data", report.getTrs());		

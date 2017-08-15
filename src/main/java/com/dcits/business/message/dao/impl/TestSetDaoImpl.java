@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.dcits.business.base.dao.impl.BaseDaoImpl;
 import com.dcits.business.message.bean.MessageScene;
+import com.dcits.business.message.bean.TestConfig;
 import com.dcits.business.message.bean.TestSet;
 import com.dcits.business.message.dao.TestSetDao;
 
@@ -50,5 +51,14 @@ public class TestSetDaoImpl extends BaseDaoImpl<TestSet> implements TestSetDao {
 		// TODO Auto-generated method stub
 		String hql = "from TestSet t where t.user.userId=:userId";
 		return getSession().createQuery(hql).setInteger("userId", userId).setCacheable(true).list();
+	}
+
+	@Override
+	public void updateSettingConfig(Integer setId, TestConfig config) {
+		// TODO Auto-generated method stub
+		String hql = "update TestSet t set t.config.configId=:configId where t.setId=:setId";
+		
+		getSession().createQuery(hql).setInteger("configId", config.getConfigId()).setInteger("setId", setId).executeUpdate();
+		
 	}
 }

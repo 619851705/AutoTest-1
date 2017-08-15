@@ -25,6 +25,7 @@ import org.apache.http.params.HttpProtocolParams;
 
 import com.dcits.business.message.bean.TestConfig;
 import com.dcits.constant.MessageKeys;
+import com.dcits.coretest.message.parse.MessageParse;
 import com.dcits.util.PracticalUtils;
 
 /**
@@ -42,9 +43,9 @@ public class HTTPTestClient extends TestClient {
 	
 	private static final String REC_ENC_CHARSET = "GBK";
 	
-	private static final int MAX_TOTAL_CONNECTION_COUNT = 100;
+	private static final int MAX_TOTAL_CONNECTION_COUNT = 1000;
 	
-	private static final int DEFAULT_MAX_PER_ROUTE_CONNECTION_COUNT = 100;
+	private static final int DEFAULT_MAX_PER_ROUTE_CONNECTION_COUNT = 500;
 	
 	private static final String DEFAULT_HTTP_METHOD = "post";
 	
@@ -56,7 +57,7 @@ public class HTTPTestClient extends TestClient {
 
         HttpProtocolParams.setUseExpectContinue(params, true);  
 
-        params.setLongParameter(ClientPNames.CONN_MANAGER_TIMEOUT, 5000);
+        params.setLongParameter(ClientPNames.CONN_MANAGER_TIMEOUT, 8000);
         //在提交请求之前 测试连接是否可用
         params.setBooleanParameter(CoreConnectionPNames.STALE_CONNECTION_CHECK, true);
        
@@ -117,7 +118,7 @@ public class HTTPTestClient extends TestClient {
     	Object[] returnInfo = null;
 		try {			    			
 			if ("get".equalsIgnoreCase(method)) {
-				returnInfo = doGet(requestUrl, headers);
+				returnInfo = doGet(requestUrl, headers, requestMessage);
 			} else {
 				returnInfo = doPost(requestUrl, headers, requestMessage, encType);
 			}
@@ -132,12 +133,10 @@ public class HTTPTestClient extends TestClient {
 		if (returnInfo != null) {
 			response = (HttpResponse) returnInfo[0];
 			useTime = (long) returnInfo[1];
-			request = (HttpRequestBase) returnInfo[2];
-		}
-
-		LOGGER.info("返回：" + response.toString());
+			request = (HttpRequestBase) returnInfo[2];			
+		}		
 		
-		if (response != null) {			
+		if (response != null) {	
 			StringBuilder returnMsg = new StringBuilder();
 
 			try {
@@ -160,8 +159,6 @@ public class HTTPTestClient extends TestClient {
 		}
 		
 		returnMap.put(MessageKeys.RESPONSE_MAP_PARAMETER_USE_TIME, String.valueOf(useTime));
-		
-		LOGGER.info(returnMap.toString());
 		
 		return returnMap;
 	}
@@ -188,11 +185,18 @@ public class HTTPTestClient extends TestClient {
 	 * @return
 	 * @throws Exception
 	 */
-	private Object[] doGet(String host, Map<String, String> headers)
+	private Object[] doGet(String host, Map<String, String> headers, String requestMessage)
 			throws Exception {
 
-		HttpGet request = new HttpGet(buildUrl(host, "", null));
+		
+		
+		if (!StringUtils.isEmpty(requestMessage) 
+				&& MessageParse.getParseInstance(MessageKeys.MESSAGE_TYPE_URL).messageFormatValidation(requestMessage)) {
+			host += "?" + requestMessage;
+		}
 
+		HttpGet request = new HttpGet(host);
+		
 		if (headers != null) {
 			for (Map.Entry<String, String> e : headers.entrySet()) {
 				request.addHeader(e.getKey(), e.getValue());
@@ -218,7 +222,7 @@ public class HTTPTestClient extends TestClient {
 	private Object[] doPost(String host, Map<String, String> headers, String body, String charSet)
             throws Exception {    	
 
-    	HttpPost request = new HttpPost(buildUrl(host, "", null));
+    	HttpPost request = new HttpPost(host);
     	
     	if (headers != null) {
     		for (Map.Entry<String, String> e : headers.entrySet()) {
@@ -246,6 +250,7 @@ public class HTTPTestClient extends TestClient {
 	 * @return 完整的url
 	 * @throws UnsupportedEncodingException
 	 */
+	@SuppressWarnings("unused")
 	private String buildUrl(String host, String path, Map<String, String> querys) throws UnsupportedEncodingException {
     	StringBuilder sbUrl = new StringBuilder();
     	sbUrl.append(host);

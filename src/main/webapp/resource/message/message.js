@@ -502,7 +502,7 @@ function getParameterJson(){
 		if(data.returnCode==0){						
 			$(".textarea").val(data.object.parameterJson);
 			if (data.object.parameterJson == null || data.object.parameterJson == "") {
-				$(".textarea").attr("placeholder","该报文没有设置入参json！");
+				$(".textarea").attr("placeholder","该报文没有设置入参内容或者对应接口入参节点发生变化,请检查并重新设置！");
 			}
 			$("#parameter-json-textarea").spinModal(false);
 		}else{

@@ -1,6 +1,8 @@
 package com.dcits.business.message.action;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import com.dcits.business.message.service.MessageSceneService;
 import com.dcits.business.message.service.TestConfigService;
 import com.dcits.business.message.service.TestDataService;
 import com.dcits.business.message.service.TestResultService;
+import com.dcits.business.message.service.TestSetService;
 import com.dcits.business.user.bean.User;
 import com.dcits.business.user.service.UserService;
 import com.dcits.constant.MessageKeys;
@@ -52,6 +55,8 @@ public class AutoTestAction extends ActionSupport implements ModelDriven<TestCon
 	private TestConfigService testConfigService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private TestSetService testSetService;
 	
 	private Integer messageSceneId;
 	
@@ -153,6 +158,42 @@ public class AutoTestAction extends ActionSupport implements ModelDriven<TestCon
 		
 		jsonMap.put("config", config);
 		jsonMap.put("returnCode", ReturnCodeConsts.SUCCESS_CODE);
+		return SUCCESS;
+	}
+	
+	/**
+	 * 测试前检查测试场景数据是否足够
+	 * @return
+	 */
+	public String checkHasData () {		
+		jsonMap.put("returnCode", ReturnCodeConsts.SUCCESS_CODE);
+
+		List<MessageScene> scenes = null;
+		
+		//全量
+		if (setId == 0) {
+			scenes = messageSceneService.findAll();
+		//测试集	
+		} else {
+			scenes = messageSceneService.getBySetId(setId);
+		}				
+		
+		if (scenes.size() == 0) {
+			jsonMap.put("count", 0);
+			return SUCCESS;
+		}
+				
+		List<MessageScene> noDataScenes = new ArrayList<MessageScene>();
+		
+		for(MessageScene ms:scenes){
+			if(ms.getEnabledTestDatas(1).size() < 1){
+				noDataScenes.add(ms);
+			}								
+		}
+		
+		jsonMap.put("count", noDataScenes.size());
+		jsonMap.put("data", noDataScenes);
+		
 		return SUCCESS;
 	}
 	

@@ -108,7 +108,8 @@ var columnsSetting = [
 							
 					},
 					ellipsisData("startTime"),
-					{
+					ellipsisData("finishTime"),
+					/*{
 						"data":"finishTime",
 						"render":function(data) {
 							if (data == null) {
@@ -116,7 +117,7 @@ var columnsSetting = [
 							}
 							return data;
 						}
-					},
+					},*/
 					{"data":"createUserName"},
 					ellipsisData("mark"),
 					{

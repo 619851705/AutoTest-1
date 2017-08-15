@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.dcits.business.base.service.impl.BaseServiceImpl;
 import com.dcits.business.message.bean.MessageScene;
+import com.dcits.business.message.bean.TestConfig;
 import com.dcits.business.message.bean.TestSet;
 import com.dcits.business.message.dao.TestSetDao;
 import com.dcits.business.message.service.TestSetService;
@@ -51,5 +52,11 @@ public class TestSetServiceImpl extends BaseServiceImpl<TestSet> implements Test
 	public List<TestSet> getUserSets(Integer userId) {
 		// TODO Auto-generated method stub
 		return testSetDao.getUserSets(userId);
+	}
+
+	@Override
+	public void updateSettingConfig(Integer setId, TestConfig config) {
+		// TODO Auto-generated method stub
+		testSetDao.updateSettingConfig(setId, config);
 	}
 }

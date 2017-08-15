@@ -118,6 +118,10 @@ public class XMLMessageParse extends MessageParse {
 	
 	private StringBuilder parseXmlMessage(ComplexParameter parameter, StringBuilder message, Map<String, Object> messageData) {		
 		
+		if (parameter.getSelfParameter() == null) {
+			return null;
+		}
+		
 		String parameterType = parameter.getSelfParameter().getType().toUpperCase();
 		String nodeName = findValidParameterIdentify(parameter);
 		boolean flag = Pattern.matches(MessageKeys.MESSAGE_PARAMETER_TYPE_ARRAY_IN_ARRAY + "|" 
@@ -133,6 +137,9 @@ public class XMLMessageParse extends MessageParse {
 			message.append(findParameterValue(parameter.getSelfParameter(), messageData));							
 		} else {
 			for (ComplexParameter p:parameter.getChildComplexParameters()) {
+				if (p.getSelfParameter() == null) {
+					continue;
+				}
 				parseXmlMessage(p, message, messageData);
 			}
 			
@@ -179,7 +186,7 @@ public class XMLMessageParse extends MessageParse {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Set<Parameter> importMessageToParameter(String message) {
+	public Set<Parameter> importMessageToParameter(String message, Set<Parameter> existParams) {
 		// TODO Auto-generated method stub
 		Object[] paramsInfo = null;
 		try {
@@ -200,7 +207,7 @@ public class XMLMessageParse extends MessageParse {
 			Parameter param = null;
 			for (int i = 0;i < paramList.size();i++) {
 				param = new Parameter(paramList.get(i), "", valueMap.get(paramList.get(i)), pathList.get(i), typeList.get(i));
-				if (validateRepeatabilityParameter(params, param)) {
+				if (validateRepeatabilityParameter(params, param) && validateRepeatabilityParameter(existParams, param)) {
 					params.add(param);
 				}								
 			}		

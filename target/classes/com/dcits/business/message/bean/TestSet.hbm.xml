@@ -13,6 +13,7 @@
         <many-to-one name="user" class="com.dcits.business.user.bean.User" lazy="proxy">
             <column name="user_id" />
         </many-to-one>
+        <many-to-one name="config" column="config_id" unique="true" cascade="all" lazy="false"></many-to-one>
         <property name="setName" type="java.lang.String">
             <column name="set_name" />
         </property>
@@ -28,7 +29,7 @@
 			<column name="status"></column>
 		</property>
         
-        <set name="ms" table="at_set_scene" lazy="true" cascade="all" inverse="true">
+        <set name="ms" table="at_set_scene" lazy="true" cascade="save-update">
         	<key column="set_id"></key>
         	<many-to-many class="com.dcits.business.message.bean.MessageScene" column="message_scene_id"></many-to-many>
         </set>

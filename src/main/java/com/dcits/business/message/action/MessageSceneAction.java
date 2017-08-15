@@ -91,7 +91,7 @@ public class MessageSceneAction extends BaseAction<MessageScene>{
 			urls.add(info.getRequestUrlMock());
 		}
 		
-		model.setEnabledTestDatas();
+		//model.setEnabledTestDatas();
 		Set<TestData> datas = model.getEnabledTestDatas(10);
 		
 		MessageParse parseUtil = MessageParse.getParseInstance(msg.getMessageType());

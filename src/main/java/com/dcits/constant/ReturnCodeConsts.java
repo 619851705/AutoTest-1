@@ -176,4 +176,6 @@ public class ReturnCodeConsts {
 	 */
 	public static final Integer QUARTZ_NEED_CRON_EXPRESSION = 8243;
 	
+	public static final Integer QUARTZ_CRON_EXPRESSION_SETTING_ERROR = 8244;
+	
 }

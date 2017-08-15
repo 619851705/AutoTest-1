@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.dcits.business.base.dao.BaseDao;
 import com.dcits.business.message.bean.MessageScene;
+import com.dcits.business.message.bean.TestConfig;
 import com.dcits.business.message.bean.TestSet;
 
 /**
@@ -43,4 +44,11 @@ public interface TestSetDao extends BaseDao<TestSet> {
 	 * @return
 	 */
 	List<TestSet> getUserSets (Integer userId);
+	
+	/**
+	 * 更新测试集的运行时配置
+	 * @param setId
+	 * @param config
+	 */
+	void updateSettingConfig(Integer setId, TestConfig config);
 }

@@ -133,11 +133,11 @@ public class TestReport implements Serializable{
 	/**
 	 * 统计当前状态下各测试结果
 	 */
-	public void setSceneNum(){
-		this.sceneNum=this.trs.size();
-		this.successNum=0;
-		this.failNum=0;
-		this.stopNum=0;
+	public void setSceneNum () {
+		this.sceneNum = this.trs.size();
+		this.successNum = 0;
+		this.failNum = 0;
+		this.stopNum = 0;
 		for(TestResult tr:this.trs){
 			switch (tr.getRunStatus()) {
 			case "0":

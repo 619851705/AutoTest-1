@@ -36,5 +36,15 @@ public class ParameterDaoImpl extends BaseDaoImpl<Parameter> implements Paramete
 			.setInteger("parameterId",parameterId)
 			.executeUpdate();		
 	}
+
+	@Override
+	public void delByInterfaceId(int interfaceId) {
+		// TODO Auto-generated method stub
+		String hql = "delete from Parameter p where p.interfaceInfo.interfaceId=:interfaceId";
+		
+		getSession().createQuery(hql)
+			.setInteger("interfaceId", interfaceId)
+			.executeUpdate();
+	}
 	
 }

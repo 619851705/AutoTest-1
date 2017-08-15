@@ -98,6 +98,10 @@ public class URLMessageParse extends MessageParse {
 		}
 		
 		for (int i = 0; i < childParams.size(); i++) {
+			if (childParams.get(i).getSelfParameter() == null) {
+				continue;
+			}
+			
 			paraseUrlMessage(childParams.get(i), message, messageData);						
 		}
 		
@@ -118,17 +122,18 @@ public class URLMessageParse extends MessageParse {
 	}
 
 	@Override
-	public Set<Parameter> importMessageToParameter(String message) {
+	public Set<Parameter> importMessageToParameter(String message, Set<Parameter> existParams) {
 		// TODO Auto-generated method stub
 		if (!messageFormatValidation(message)) {
 			return null;
 		}
+		
 		Set<Parameter> params = new HashSet<Parameter>();
 		Map<String, String> urlParams = parseUrlToMap(message);
 		
 		for (String key:urlParams.keySet()) {
 			Parameter p = new Parameter(key, key, urlParams.get(key), MessageKeys.MESSAGE_PARAMETER_DEFAULT_ROOT_PATH, "String");
-			if (validateRepeatabilityParameter(params, p)) {
+			if (validateRepeatabilityParameter(params, p) && validateRepeatabilityParameter(existParams, p)) {
 				params.add(p);
 			}
 		}

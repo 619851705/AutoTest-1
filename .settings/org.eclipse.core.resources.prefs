@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//src/main/java=UTF-8
 encoding//src/main/resources=UTF-8
+encoding//src/main/webapp/resource/message/interface-parameters.htm=UTF-8
 encoding//src/main/webapp/resource/message/messageScene-test.htm=UTF-8
 encoding//src/main/webapp/resource/message/messageScene-validateFullJson.htm=UTF-8
 encoding//src/main/webapp/resource/message/messageScene-validateKeyword.htm=UTF-8
